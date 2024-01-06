@@ -6,7 +6,7 @@ app = Flask(__name__)
 
 @app.route('/')
 def index():
-    return render_template('debank.html')
+    return "amogus gaming" # render_template('debank.html')
 
 # Launch the web browser before running the app
 webbrowser.open("http://127.0.0.1:5000/")
