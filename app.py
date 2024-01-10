@@ -1,7 +1,7 @@
 # imports
 from flask import Flask, render_template
 from flask_sqlalchemy import SQLAlchemy
-from models import db, Customer
+from models import db, Customer, seed_data
 import webbrowser
 from flask_migrate import Migrate, upgrade
 
@@ -31,18 +31,21 @@ def index():
 @app.route('/customers')
 def customers():
     all_customers = Customer.query.all() # Returns a python list of customers
-    print(all_customers)
 
 
 def main():
+    
+
+
+    # flask db migrate -m "description_of_changes"
+    # flask db upgrade
     with app.app_context():
-        customers()
-        return
-        upgrade()
+        seed_data()
+        #upgrade()
 
-    webbrowser.open("http://127.0.0.1:5000/")
 
-    app.run("127.0.0.1", port=5000, debug=True)
+    #webbrowser.open("http://127.0.0.1:5000/")
+    #app.run("127.0.0.1", port=5000, debug=True)
 
 
 if __name__ == '__main__':

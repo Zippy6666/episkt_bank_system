@@ -1,9 +1,8 @@
 >>> TODO <<<
-- Study
-    - Do some dumshit with jinja, use images
-    - faker to generate some garbage data
-
-
+- Study morrow
+    - kronofodgen images
+    - lägg till konto tabell
+    - hitta en najs free template
 
 
 
