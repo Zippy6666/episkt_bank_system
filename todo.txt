@@ -1,7 +1,6 @@
 >>> TODO <<<
 - Study
-    - Do some dumshit with jinja, use images (img in static folder? what is that?)
-    - Upgrade a database in dbeaver with python (read up on migrate)
+    - Do some dumshit with jinja, use images
     - faker to generate some garbage data
 
 
