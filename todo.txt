@@ -1,4 +1,13 @@
 >>> TODO <<<
+- Study
+    - Do some dumshit with jinja, use images (img in static folder? what is that?)
+    - Upgrade a database in dbeaver with python (read up on migrate)
+    - faker to generate some garbage data
+
+
+
+
+
 - G
     - Administrationssystem för en bank.
     - UTGÅ IFRÅN: https://github.com/aspcodenet/WebDemos, Den kommer seeda 5000 kunder (ps ta färre om du vill, men minst 500).
