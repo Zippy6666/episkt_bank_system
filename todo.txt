@@ -1,8 +1,7 @@
 >>> TODO <<<
 - Study morrow
     - kronofodgen images
-    - lägg till konto tabell
-    - hitta en najs free template
+    - just fix everything lol
 
 
 
