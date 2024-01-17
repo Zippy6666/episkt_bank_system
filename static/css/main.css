@@ -43,6 +43,15 @@ footer {
     width: 100%;
 }
 
+a {
+    color: cadetblue;
+}
+
+p {
+    padding: 10px;
+    padding-top: 2px;
+}
+
 
 img {
     max-width: 100%;
@@ -83,4 +92,10 @@ button {
     border: none;
     border-radius: 5px;
     cursor: pointer;
+}
+
+.errortext {
+    color: red;
+    font-size: smaller;
+    padding: 10px;
 }

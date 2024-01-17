@@ -5,7 +5,6 @@
     </head>
 
 
-
     <body>
         <header>Login Page</header>
 
@@ -16,6 +15,8 @@
 
 
     <form action="/login" method="post">
+
+        <p class="errortext">{{errormsg}}</p>
 
         <!-- input fields for email and password -->
         <label for="email">Email:</label>
@@ -28,5 +29,11 @@
         <button type="submit">Login</button>
 
     </form>
+
+
+    <footer>
+        <p>&copy; 2024 Zippy Kronofogden Banksystems AB. All rights reserved.</p>
+        <p><a href="/privacy-policy">Privacy Policy</a> | <a href="/terms-of-service">Terms of Service</a></p>
+    </footer>
 
 </html>

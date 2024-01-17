@@ -77,6 +77,9 @@ def load_user(user_id) -> User:
 # login page
 @app.route("/login", methods=["GET", "POST"])
 def login() -> str:
+    errormsg = ""
+
+    # login post
     if request.method == 'POST':
         email = request.form['email']
         password = request.form['password']
@@ -90,9 +93,14 @@ def login() -> str:
                 print(email, user, authorized)
                 login_user(user) # login
                 return redirect(url_for('index')) # to homepage
+            else:
+                errormsg = "The password is incorrect."
+            
+        else:
+            errormsg = "This email is not registered in our database."
     
 
-    return render_template('login.html')
+    return render_template('login.html', errormsg=errormsg)
 
 
 # =====================================================================
@@ -112,10 +120,22 @@ def index() -> str:
 # =====================================================================
 
 
+# tos
+@app.route("/terms-of-service")
+def tos() -> str:
+    return render_template("tos.html")
+
+
+# privacy policy
+@app.route("/privacy-policy")
+def privacy_policy() -> str:
+    return render_template("privacy-policy.html")
+
+
 # customer test
 @app.route("/customers")
 def customers() -> str:
-    all_customers = Customer.query.all()  # returns a python list of customers
+    all_customers = Customer.query.all()  # returns a python list of customers, from the sql database
 
 
 # =====================================================================
