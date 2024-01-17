@@ -1,10 +1,4 @@
 >>> TODO <<<
-- Study morrow
-    - kronofodgen images
-    - just fix everything lol
-
-
-
 - G
     - Administrationssystem för en bank.
     - UTGÅ IFRÅN: https://github.com/aspcodenet/WebDemos, Den kommer seeda 5000 kunder (ps ta färre om du vill, men minst 500).

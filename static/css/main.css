@@ -1,10 +1,50 @@
-body {
-    background-color: rgb(60, 60, 60);
-    font-family: Georgia, 'Times New Roman', Times, serif;
-    margin: 15px
+/* Apply a global reset to remove default margin and padding */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
+body {
+    background-color: #333; /* Dark background color */
+    color: #fff; /* Light text color */
+    font-family: 'Georgia', 'Times New Roman', Times, serif;
+    margin: 15px;
+}
 
-.mainheader {
-    color:rgb(255, 255, 255)
+/* Style for paragraphs */
+p {
+    line-height: 1.6;
+    margin-bottom: 15px;
+}
+
+/* Style for links */
+a {
+    color: #3498db; /* Blue link color */
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline; /* Underline on hover */
+}
+
+/* Style for headers */
+h1, h2, h3 {
+    color: #fff; /* Light text color for headers */
+    margin-bottom: 10px;
+}
+
+/* Style for the site header */
+header {
+    background-color: #222; /* Dark background color for header */
+    padding: 10px;
+    text-align: center;
+}
+
+/* Style for the site footer */
+footer {
+    background-color: #222;
+    color: #fff;
+    padding: 10px;
+    text-align: center;
 }

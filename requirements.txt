@@ -16,3 +16,4 @@ SQLAlchemy==2.0.25
 typing_extensions==4.9.0
 Werkzeug==3.0.1
 faker==22.1.0
+flask_login==0.6.3
