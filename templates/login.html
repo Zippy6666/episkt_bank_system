@@ -4,11 +4,29 @@
         <link rel="stylesheet" type="text/css" href="../static/css/main.css">
     </head>
 
+
+
     <body>
-        <h1>Login</h1>
+        <header>Login Page</header>
+
+        <img src="../static/img/iq.png" alt="chatgpt image">
+
+        <h1>Fill in your login credentials below:</h1>
     </body>
 
 
+    <form action="/login" method="post">
 
+        <!-- input fields for email and password -->
+        <label for="email">Email:</label>
+        <input type="text" id="email" name="email" required>
+
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required>
+
+        <!-- submit button -->
+        <button type="submit">Login</button>
+
+    </form>
 
 </html>

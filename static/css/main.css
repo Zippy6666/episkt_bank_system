@@ -1,50 +1,86 @@
-/* Apply a global reset to remove default margin and padding */
-* {
+/*
+====================================================================================================
+    basic
+====================================================================================================
+*/
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f4f4f4;
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
-body {
-    background-color: #333; /* Dark background color */
-    color: #fff; /* Light text color */
-    font-family: 'Georgia', 'Times New Roman', Times, serif;
-    margin: 15px;
-}
-
-/* Style for paragraphs */
-p {
-    line-height: 1.6;
-    margin-bottom: 15px;
-}
-
-/* Style for links */
-a {
-    color: #3498db; /* Blue link color */
-    text-decoration: none;
-}
-
-a:hover {
-    text-decoration: underline; /* Underline on hover */
-}
-
-/* Style for headers */
-h1, h2, h3 {
-    color: #fff; /* Light text color for headers */
-    margin-bottom: 10px;
-}
-
-/* Style for the site header */
 header {
-    background-color: #222; /* Dark background color for header */
-    padding: 10px;
+    background-color: #333;
+    color: white;
     text-align: center;
+    padding: 1em;
+    font-size: large;
 }
 
-/* Style for the site footer */
-footer {
-    background-color: #222;
-    color: #fff;
-    padding: 10px;
+h1 {
     text-align: center;
+    font-size: large;
+}
+
+main {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+footer {
+    background-color: #333;
+    color: white;
+    text-align: center;
+    padding: 1em;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}
+
+
+img {
+    max-width: 100%;
+}
+
+
+/*
+====================================================================================================
+    form stuff
+====================================================================================================
+*/
+
+form {
+    width: 100%;
+    max-width: 400px;
+    margin: 20px auto;
+}
+
+label {
+    display: block;
+    margin-bottom: 8px;
+    color: #333;
+}
+
+input {
+    width: 100%;
+    padding: 10px;
+    box-sizing: border-box;
+    margin-bottom: 20px;
+}
+
+button {
+    width: 100%;
+    padding: 12px;
+    box-sizing: border-box;
+    background-color: #ffb93f;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
 }

@@ -5,10 +5,10 @@
 
 import webbrowser, os
 from enum import Enum
-from flask import Flask, render_template
+from flask import Flask, render_template, request, redirect, url_for
 from models import db, Customer
 from flask_migrate import Migrate, upgrade
-from flask_login import login_required, LoginManager, UserMixin
+from flask_login import login_required, LoginManager, UserMixin, login_user
 
 
 # =====================================================================
@@ -41,6 +41,7 @@ migrate = Migrate(app, db)
 # =====================================================================
 
 
+# user roles
 class UserRole(Enum):
     CASHIER = 1
     ADMIN = 2
@@ -48,22 +49,50 @@ class UserRole(Enum):
 
 # user class
 class User(UserMixin):
-    def __init__(self, email:str, password:str, role:UserRole) -> None:
-        self._email = email
+    def __init__(self, id:str, password:str, role:UserRole) -> None:
+        self.id = id
         self._password = password
         self._role = role
+    
+    def authenticate( self, password ) -> bool:
+        if password==self._password:
+            return True
+        else:
+            return False
+
+
+# test user database
+users = {
+    "bruh420@garbagemail.net":  User("bruh420@garbagemail.net", "123123123", UserRole.CASHIER)
+}
 
 
 # load user
 @login_manager.user_loader
 def load_user(user_id) -> User:
-    return User(user_id)
+    return users[user_id]
+
 
 
 # login page
-@app.route("/login")
+@app.route("/login", methods=["GET", "POST"])
 def login() -> str:
-    return render_template("login.html")
+    if request.method == 'POST':
+        email = request.form['email']
+        password = request.form['password']
+
+        # user email registered in database
+        if email in users:
+            user = users[email]
+            authorized = user.authenticate(password) # check if password is correct
+
+            if authorized:
+                print(email, user, authorized)
+                login_user(user) # login
+                return redirect(url_for('index')) # to homepage
+    
+
+    return render_template('login.html')
 
 
 # =====================================================================
@@ -86,7 +115,7 @@ def index() -> str:
 # customer test
 @app.route("/customers")
 def customers() -> str:
-    all_customers = Customer.query.all()  # Returns a python list of customers
+    all_customers = Customer.query.all()  # returns a python list of customers
 
 
 # =====================================================================
@@ -98,12 +127,8 @@ def main() -> None:
     with app.app_context():
         upgrade()
 
-
-    User("bruh420@garbagemail.net", "123123123", UserRole.CASHIER) # New test user
-
-
     webbrowser.open("http://127.0.0.1:5000/")
-    app.run("127.0.0.1", port=5000, debug=True)
+    app.run("127.0.0.1", port=5000)
 
 
 if __name__ == "__main__":
