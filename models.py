@@ -25,20 +25,19 @@ class Customer(db.Model):
     ssn = db.Column(db.Integer, nullable=False, unique=True)
 
     # relationship
-    accounts = db.relationship("Account", backref="my_customer", lazy=True)
-
+    accounts = db.relationship("Account", backref="customer", lazy=True)
 
 
     # Bank account for a customer
 class Account(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     saldo = db.Column(db.Float, nullable=False)
-    customer = db.Column(db.Integer, db.ForeignKey("customer.id"), nullable=False)
+    customer_id = db.Column(db.Integer, db.ForeignKey("customer.id"), nullable=False)
 
 
     # Transaction for a account
-class Transaction(db.Model):
-    pass
+# class Transaction(db.Model):
+#     pass
 
 
 
@@ -55,16 +54,16 @@ def seed_data():
 
     if Customer.query.count() <= 0:
 
-        for _ in range(300):
+        for i in range(1, 301):
 
             # customer
             city = fake.city()
-            snn = fake.random_number(digits=9)
-            customer = Customer(city=city, saldo=saldo, snn=snn)
+            ssn = fake.random_number(digits=9)
+            customer = Customer(id=i, city=city, ssn=ssn)
             
             # account for customer
             saldo = fake.random_number(digits=6)
-            account = Account(city=city, account=account, saldo=saldo)
+            account = Account(id=i, customer_id=customer.id, saldo=saldo)
 
             
             db.session.add(customer)
