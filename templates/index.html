@@ -9,8 +9,15 @@
     <body>
         
         <!--main stuff-->
-        <h1 class="mainheader"> DABANK </h1>
-        <p> This is da bank, u have {{ dollars }} dollars</p>
+        <header class="mainheader"> DABANK </header>
+
+
+        <h1>Customers</h1>
+        <ul>
+            {% for customer in customers %}
+                <li>{{ customer.id }}</li>
+            {% endfor %}
+        </ul>
 
 
         <!--images-->
@@ -18,7 +25,7 @@
         <img class="gpt_image" src="../static/img/chatgpt.png" alt="kronofogden chatgpt">
 
 
-
+        <!--Javascript-->
         <script src="../static/js/test.js"> </script>
 
 

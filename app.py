@@ -6,7 +6,7 @@
 import webbrowser, os
 from enum import Enum
 from flask import Flask, render_template, request, redirect, url_for
-from models import db, Customer
+from models import db, Customer, Account, seed_data
 from flask_migrate import Migrate, upgrade
 from flask_login import login_required, LoginManager, UserMixin, login_user
 
@@ -112,7 +112,9 @@ def login() -> str:
 @app.route("/")
 @login_required
 def index() -> str:
-    return render_template("index.html", dollars=69)
+    customers = Customer.query.all()
+    accounts  = Account.query.all()
+    return render_template("index.html", customers=customers, accounts=accounts)
 
 
 # =====================================================================
@@ -132,12 +134,6 @@ def privacy_policy() -> str:
     return render_template("privacy-policy.html")
 
 
-# customer test
-@app.route("/customers")
-def customers() -> str:
-    all_customers = Customer.query.all()  # returns a python list of customers, from the sql database
-
-
 # =====================================================================
 # main
 # =====================================================================
@@ -146,6 +142,7 @@ def customers() -> str:
 def main() -> None:
     with app.app_context():
         upgrade()
+        seed_data()
 
     webbrowser.open("http://127.0.0.1:5000/")
     app.run("127.0.0.1", port=5000)
