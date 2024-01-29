@@ -15,6 +15,14 @@ from faker import Faker
 # if shit hits the fan, do db.create_all()
 
 
+"""
+>>>TODO<<<
+- Add user model
+- Make sure current models are finished and have proper relationships
+"""
+
+
+
 db = SQLAlchemy()
 
 
@@ -38,7 +46,6 @@ class Account(db.Model):
     # Transaction for a account
 # class Transaction(db.Model):
 #     pass
-
 
 
 # =====================================================================

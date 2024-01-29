@@ -99,3 +99,25 @@ button {
     font-size: smaller;
     padding: 10px;
 }
+
+
+/* CSS for Three Blocks Layout */
+.stat-block {
+    width: 30%; /* Adjust the width as needed */
+    display: inline-block;
+    margin: 10px; /* Adjust the margin as needed for spacing */
+    vertical-align: top; /* Align blocks at the top */
+    box-sizing: border-box;
+    border: 1px solid #ccc; /* Optional: Add borders for visual separation */
+    padding: 15px;
+}
+
+/* Optional: Add a background color or any other styling */
+.stat-block h2 {
+    color: #333;
+}
+
+.stat-block p {
+    color: #666;
+    font-weight: bold;
+}

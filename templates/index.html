@@ -9,15 +9,36 @@
     <body>
         
         <!--main stuff-->
-        <header class="mainheader"> DABANK </header>
+        <header class="mainheader"> DABANK STATISTICS </header>
 
 
-        <h1>Customers</h1>
+        <!-- <h1>Customers</h1>
         <ul>
             {% for customer in customers %}
                 <li>{{ customer.id }}</li>
             {% endfor %}
-        </ul>
+        </ul> -->
+
+
+        <section class="stat-block">
+            <h2>Customers Registered</h2>
+            <p>{{customercount}}</p>
+        </section>
+
+
+        <section class="stat-block">
+            <h2>Accounts Registered</h2>
+            <p>{{accountcount}}</p>
+        </section>
+
+
+        <section class="stat-block">
+            <h2>Saldo Sum</h2>
+            <p>{{saldosum}} SEK</p>
+        </section>
+
+
+        
 
 
         <!--images-->

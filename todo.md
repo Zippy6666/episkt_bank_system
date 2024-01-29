@@ -4,7 +4,7 @@
         Du ska lägga in roller via seed, Rollen Cashier ska kunna administrera kunder och deras konton.
     - [x] Använd den databas som seedas vid uppstart, SQLAlchemy etc.
     - [x] Bygg ett webbgränssnitt.
-    - [ ] Startsida: skriv ut statistik på startsidan. Man ska se antal kunder, antal konton och summan av saldot på konton.
+    - [x] Startsida: skriv ut statistik på startsidan. Man ska se antal kunder, antal konton och summan av saldot på konton.
     - [ ] Bygg en Flask lösning för en bank som kan hantera kunder, deras konton med saldo samt transaktioner.
     - [ ] Input valideringar, tänk på att kronofogden ska använda systemet.
     - [ ] Det ska gå att ta fram en kundbild genom att ange kundnummer.
@@ -28,6 +28,11 @@
         - [ ] stefan.holmberg@systementor.se och Hejsan123# och som Admin
         - [ ] stefan.holmberg@nackademin.se och Hejsan123# och som Cashier
     - [ ] Driftsätt din lösning och databas till Azure.
+
+
+
+
+    
 - [ ] VG - Lösningen måste vara gjord med god arkitektur.
     - [ ] Det ska gå att skapa en ny och ändra en kund.
         - [ ] När en kund skapas ska de få ett nytt unikt kundnummer.

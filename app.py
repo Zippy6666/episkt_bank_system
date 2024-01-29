@@ -90,7 +90,6 @@ def login() -> str:
             authorized = user.authenticate(password) # check if password is correct
 
             if authorized:
-                print(email, user, authorized)
                 login_user(user) # login
                 return redirect(url_for('index')) # to homepage
             else:
@@ -112,9 +111,14 @@ def login() -> str:
 @app.route("/")
 @login_required
 def index() -> str:
-    customers = Customer.query.all()
-    accounts  = Account.query.all()
-    return render_template("index.html", customers=customers, accounts=accounts)
+    # Show some statistics on the start page
+
+    cquery = Customer.query # customer query
+    aquery = Account.query # account query
+
+    saldosum = sum(a.saldo for a in aquery.all())
+
+    return render_template("index.html", customercount=cquery.count(), accountcount=aquery.count(), saldosum=f"{saldosum:,}")
 
 
 # =====================================================================
