@@ -102,7 +102,7 @@ def login() -> str:
 
 
 # =====================================================================
-# index
+# administrate
 # =====================================================================
 
 
@@ -118,6 +118,13 @@ def index() -> str:
     saldosum = sum(a.saldo for a in aquery.all())
 
     return render_template("index.html", customercount=cquery.count(), accountcount=aquery.count(), saldosum=f"{saldosum:,}")
+
+
+# kundbild
+@app.route("/kundbild")
+@login_required
+def kundbild() -> str:
+    return render_template("kundbild.html")
 
 
 # =====================================================================

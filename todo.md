@@ -7,14 +7,14 @@
     - [x] Startsida: skriv ut statistik på startsidan. Man ska se antal kunder, antal konton och summan av saldot på konton.
     - [x] Det får inte bli några avrundningsfel så använd decimal.
     - [x] Bygg en Flask lösning för en bank som kan hantera kunder, deras konton med saldo samt transaktioner.
-    - [ ] Det ska finnas Unit Tester där du skriver tester som testar att det:
-        - [ ] inte går att ta ut eller överföra mer pengar än det finns på kontot.
-        - [ ] gå att sätta in eller ta ut negativa belopp.
-    - [ ] Input valideringar, tänk på att kronofogden ska använda systemet.
     - [ ] Det ska gå att ta fram en kundbild genom att ange kundnummer.
         - [ ] Kundbilden ska visa all information om kunden och alla kundens konton.
         - [ ] Kundbilden ska också visa det totala saldot för kunden genom att summera saldot på kundens konton.
         - [ ] När man klickar på ett kontonummer i kundbilden ska man komma till en kontosida som visar kontonummer och saldo samt en lista med transaktioner i descending order.
+    - [ ] Input valideringar, tänk på att kronofogden ska använda systemet.
+    - [ ] Det ska finnas Unit Tester där du skriver tester som testar att det:
+        - [ ] inte går att ta ut eller överföra mer pengar än det finns på kontot.
+        - [ ] gå att sätta in eller ta ut negativa belopp.
     - [ ] Det ska gå att söka efter kund på namn och stad
         - [ ] En lista ska visas med kundnummer och personnummer, namn, adress, city som sökresultat.
         - [ ] Sökresultatet ska vara möjligt att sortera. Första klicket på en kolumn = asc, sen desc, sen asc etc etc
