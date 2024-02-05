@@ -22,7 +22,6 @@ from faker import Faker
 """
 
 
-
 db = SQLAlchemy()
 
 
@@ -41,11 +40,15 @@ class Account(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     saldo = db.Column(db.Float, nullable=False)
     customer_id = db.Column(db.Integer, db.ForeignKey("customer.id"), nullable=False)
+    transactions = db.relationship("Transaction", backref="transaction", lazy=True)
 
 
     # Transaction for a account
-# class Transaction(db.Model):
-#     pass
+class Transaction(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    belopp = db.Column(db.Float, nullable=False)
+    typ = db.Column(db.String(6), nullable=False)
+    account_id = db.Column(db.Integer, db.ForeignKey("account.id"), nullable=False)
 
 
 # =====================================================================

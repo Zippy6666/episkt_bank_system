@@ -12,6 +12,7 @@ body {
     box-sizing: border-box;
 }
 
+
 header {
     background-color: #333;
     color: white;
@@ -20,10 +21,12 @@ header {
     font-size: large;
 }
 
+
 h1 {
     text-align: center;
     font-size: large;
 }
+
 
 main {
     max-width: 800px;
@@ -32,6 +35,7 @@ main {
     background-color: #fff;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
+
 
 footer {
     background-color: #333;
@@ -43,9 +47,11 @@ footer {
     width: 100%;
 }
 
+
 a {
     color: cadetblue;
 }
+
 
 p {
     padding: 10px;

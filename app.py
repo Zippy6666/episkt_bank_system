@@ -73,7 +73,6 @@ def load_user(user_id) -> User:
     return users[user_id]
 
 
-
 # login page
 @app.route("/login", methods=["GET", "POST"])
 def login() -> str:
