@@ -1,0 +1,3 @@
+function menuButtonClick() {
+    alert("HALLÅELLE")
+}

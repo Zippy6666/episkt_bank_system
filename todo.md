@@ -1,4 +1,9 @@
 >>> TODO <<<
+
+USE BOOTSTRÄP PIPPA!!!!!!!!!!!!!!!
+
+
+
 - [ ] G - Administrationssystem för en bank.
     - [x] Inloggning ska vara implementerat
         Du ska lägga in roller via seed, Rollen Cashier ska kunna administrera kunder och deras konton.
