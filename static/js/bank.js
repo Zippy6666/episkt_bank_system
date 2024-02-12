@@ -1,3 +1,3 @@
 function menuButtonClick() {
-    alert("HALLÅELLE")
+    window.location.href = "/templates/kundbild.html";
 }
