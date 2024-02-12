@@ -19,7 +19,7 @@ from flask_login import login_required, LoginManager, UserMixin, login_user
 # app
 app = Flask(__name__)
 app.config["SQLALCHEMY_DATABASE_URI"] = "mysql+mysqlconnector://root:my-secret-pw@localhost:3306/bnk"
-app.config["SECRET_KEY"] = os.environ.get('PRIVATE_KEY')
+app.config["SECRET_KEY"] = os.environ.get('LoginSecretKey')
 
 
 # login manager
