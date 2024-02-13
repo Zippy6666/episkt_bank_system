@@ -1,7 +1,7 @@
 from faker import Faker
 from models import Customer, Account, SuperUser, db
 from app import app
-from werkzeug.security import generate_password_hash
+from hashlib import sha256
 
 
 # =====================================================================
@@ -9,8 +9,10 @@ from werkzeug.security import generate_password_hash
 # =====================================================================
 
 
-def fake_user( email, password, rolename ):
-    user = SuperUser(email=email, password=generate_password_hash(password, method="sha256"), rolename=rolename)
+def create_user( email, password, rolename ):
+    pass_encoded = password.encode()
+    passhash = sha256(pass_encoded).hexdigest()
+    user = SuperUser(email=email, password=passhash, rolename=rolename)
     db.session.add(user)
 
 
@@ -41,9 +43,9 @@ def seed_data():
             db.session.add(account)
         
         # seed users
-        fake_user( "bruh420@garbagemail.net", "123123123", "Admin" )
-        fake_user( "stefan.holmberg@systementor.se", "Hejsan123#", "Admin" )
-        fake_user( "stefan.holmberg@nackademin.se", "Hejsan123#", "Cashier" )
+        create_user( "bruh420@garbagemail.net", "123123123", "Admin" )
+        create_user( "stefan.holmberg@systementor.se", "Hejsan123#", "Admin" )
+        create_user( "stefan.holmberg@nackademin.se", "Hejsan123#", "Cashier" )
 
         # commit
         db.session.commit()

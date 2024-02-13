@@ -8,7 +8,7 @@ from flask import Flask, render_template, request, redirect, url_for
 from models import db, Customer, Account, SuperUser
 from flask_migrate import Migrate, upgrade
 from flask_login import login_required, LoginManager, login_user
-from werkzeug.security import check_password_hash
+from hashlib import sha256
 
 
 # =====================================================================
@@ -52,6 +52,11 @@ def get_user( email:str ) -> SuperUser:
     return SuperUser.query.filter(SuperUser.email == email).first()
 
 
+def check_password(input_password, stored_hash):
+    input_hash = sha256(input_password.encode()).hexdigest()
+    return input_hash == stored_hash
+
+
 # login page
 @app.route("/login", methods=["GET", "POST"])
 def login() -> str:
@@ -64,8 +69,8 @@ def login() -> str:
 
         # user email registered in database
         if not user is None:
-            # password = request.form['password']
-            authorized = True
+            password = request.form['password']
+            authorized = check_password(password, user.password)
 
             if authorized:
                 login_user(user) # login
