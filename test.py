@@ -1,5 +1,4 @@
 import unittest
-import hashlib
 
-# class Something(unittest.Testcase):
-#     ...
+class Something(unittest.Testcase):
+    ...
