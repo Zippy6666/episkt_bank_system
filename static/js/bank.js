@@ -1,3 +1,4 @@
 function menuButtonClick() {
-    window.location.href = "/templates/kundbild.html";
+    let url = "/kundbild";
+    window.location.href = url;
 }
