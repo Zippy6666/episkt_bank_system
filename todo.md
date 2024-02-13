@@ -13,7 +13,7 @@ STEAL CODE FROM STEFANS SUPERSHOP XDDDDDDDDDDDDD
     - [x] Startsida: skriv ut statistik på startsidan. Man ska se antal kunder, antal konton och summan av saldot på konton.
     - [x] Det får inte bli några avrundningsfel så använd decimal.
     - [x] Bygg en Flask lösning för en bank som kan hantera kunder, deras konton med saldo samt transaktioner.
-    - [ ] Det ska gå att ta fram en kundbild genom att ange kundnummer.
+    - [x] Det ska gå att ta fram en kundbild genom att ange kundnummer.
         - [ ] Kundbilden ska visa all information om kunden och alla kundens konton.
         - [ ] Kundbilden ska också visa det totala saldot för kunden genom att summera saldot på kundens konton.
         - [ ] När man klickar på ett kontonummer i kundbilden ska man komma till en kontosida som visar kontonummer och saldo samt en lista med transaktioner i descending order.

@@ -7,10 +7,20 @@
 
 
     <body>
-
-        <!--main stuff-->
         <header class="mainheader"> DABANK KUNDBILD </header>
 
+        <h1>Ta fram en kundbild genom kund ID här</h1>
+
+        <form action="/kundbild" method="post">
+            <label for="kundid">Kund ID:</label>
+            <input type="text" id="kundid" name="kundid" value="{{kundid}}">
+        </form>
+
+        
+        <section class="stat-block">
+            <h2>Kund Info</h2>
+            <p>{{kundinfo}}</p>
+        </section>
     </body>
 
 

@@ -121,10 +121,18 @@ def index() -> str:
 
 
 # kundbild
-@app.route("/kundbild")
+@app.route("/kundbild", methods=["GET", "POST"])
 @login_required
 def kundbild() -> str:
-    return render_template("kundbild.html")
+    data = dict(
+        kundid="",
+        kundinfo="Ingen kund vald",
+    )
+
+    if request.method == "POST":
+        data["kundid"] = request.form["kundid"]
+
+    return render_template("kundbild.html", **data)
 
 
 # =====================================================================
