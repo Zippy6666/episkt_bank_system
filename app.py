@@ -4,11 +4,11 @@
 
 
 import webbrowser, os
-from enum import Enum
 from flask import Flask, render_template, request, redirect, url_for
-from models import db, Customer, Account
+from models import db, Customer, Account, SuperUser
 from flask_migrate import Migrate, upgrade
-from flask_login import login_required, LoginManager, UserMixin, login_user
+from flask_login import login_required, LoginManager, login_user
+from werkzeug.security import check_password_hash
 
 
 # =====================================================================
@@ -41,36 +41,15 @@ migrate = Migrate(app, db)
 # =====================================================================
 
 
-# user roles
-class UserRole(Enum):
-    CASHIER = 1
-    ADMIN = 2
-
-
-# user class
-class User(UserMixin):
-    def __init__(self, id:str, password:str, role:UserRole) -> None:
-        self.id = id
-        self._password = password
-        self._role = role
-    
-    def authenticate( self, password ) -> bool:
-        if password==self._password:
-            return True
-        else:
-            return False
-
-
-# test user database
-users = {
-    "bruh420@garbagemail.net":  User("bruh420@garbagemail.net", "123123123", UserRole.CASHIER)
-}
-
-
-# load user
 @login_manager.user_loader
-def load_user(user_id) -> User:
-    return users[user_id]
+def load_user(user_id:int) -> SuperUser:
+    """ Login manager load user """
+    return SuperUser.query.filter(SuperUser.id == user_id).first()
+
+
+def get_user( email:str ) -> SuperUser:
+    """ Gets user by email """
+    return SuperUser.query.filter(SuperUser.email == email).first()
 
 
 # login page
@@ -81,12 +60,12 @@ def login() -> str:
     # login post
     if request.method == 'POST':
         email = request.form['email']
-        password = request.form['password']
+        user = get_user(email)
 
         # user email registered in database
-        if email in users:
-            user = users[email]
-            authorized = user.authenticate(password) # check if password is correct
+        if not user is None:
+            # password = request.form['password']
+            authorized = True
 
             if authorized:
                 login_user(user) # login

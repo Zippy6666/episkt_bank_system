@@ -1,6 +1,7 @@
 from faker import Faker
-from models import Customer, Account, db
+from models import Customer, Account, SuperUser, db
 from app import app
+from werkzeug.security import generate_password_hash
 
 
 # =====================================================================
@@ -8,7 +9,11 @@ from app import app
 # =====================================================================
 
 
-    # Fake data
+def fake_user( email, password, rolename ):
+    user = SuperUser(email=email, password=generate_password_hash(password, method="sha256"), rolename=rolename)
+    db.session.add(user)
+
+
 def seed_data():
     fake = Faker()
 
@@ -16,8 +21,8 @@ def seed_data():
         # Delete old data
         db.session.query(Account).delete()
         db.session.query(Customer).delete()
+        db.session.query(SuperUser).delete()
         db.session.commit()
-
 
         for _ in range(1, 301):
             # customer
@@ -34,13 +39,22 @@ def seed_data():
 
             db.session.add(customer)
             db.session.add(account)
+        
+        # seed users
+        fake_user( "bruh420@garbagemail.net", "123123123", "Admin" )
+        fake_user( "stefan.holmberg@systementor.se", "Hejsan123#", "Admin" )
+        fake_user( "stefan.holmberg@nackademin.se", "Hejsan123#", "Cashier" )
 
-        db.session.commit()  # Commit the remaining records
+        # commit
+        db.session.commit()
 
     except Exception as e:
+
         print(f"Error during data seed: {str(e)}")
         db.session.rollback()  # Rollback the transaction in case of an error
+
     else:
+
         print("Data seeded sucessfully!")
 
 

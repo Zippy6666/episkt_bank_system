@@ -1,2 +1,1 @@
-very secure open source bank system
-made by zipper
+Kör seeddata.py för att seeda data!
