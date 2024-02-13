@@ -6,7 +6,7 @@
 import webbrowser, os
 from enum import Enum
 from flask import Flask, render_template, request, redirect, url_for
-from models import db, Customer, Account, seed_data
+from models import db, Customer, Account
 from flask_migrate import Migrate, upgrade
 from flask_login import login_required, LoginManager, UserMixin, login_user
 
@@ -158,9 +158,10 @@ def privacy_policy() -> str:
 
 
 def main() -> None:
+    # flask db migrate -m "Your migration message"
+    # flask db upgrade
     with app.app_context():
         upgrade()
-        seed_data()
 
     webbrowser.open("http://127.0.0.1:5000/")
     app.run("127.0.0.1", port=5000)
