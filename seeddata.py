@@ -38,7 +38,9 @@ def seed_data():
             for _ in range(random.randint(0, 3)):
                 saldo = fake.random_number(digits=6)
                 kontonummer = str(fake.random_number(digits=12, fix_len=True))
-                account = Account(customer=customer, saldo=saldo, kontonummer=kontonummer)
+                account = Account(
+                    customer=customer, saldo=saldo, kontonummer=kontonummer
+                )
 
             db.session.add(customer)
             db.session.add(account)

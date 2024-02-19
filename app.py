@@ -18,7 +18,9 @@ from sqlalchemy import func
 
 
 app = Flask(__name__)
-app.config["SQLALCHEMY_DATABASE_URI"] = "mysql+mysqlconnector://root:my-secret-pw@localhost:3306/bnk"
+app.config[
+    "SQLALCHEMY_DATABASE_URI"
+] = "mysql+mysqlconnector://root:my-secret-pw@localhost:3306/bnk"
 app.config["SECRET_KEY"] = os.environ.get("LoginSecretKey")
 
 login_manager = LoginManager(app)
@@ -34,9 +36,11 @@ migrate = Migrate(app, db)
 # Services
 # =====================================================================
 
+
 def get_customer(id: int) -> Customer:
     """Aquire customer from database by ID."""
     return Customer.query.filter(Customer.id == id).first()
+
 
 @login_manager.user_loader
 def load_user(user_id: int) -> SuperUser:
@@ -113,6 +117,7 @@ def index() -> str:
 # Kundbild
 # =====================================================================
 
+
 @app.route("/kundbild", methods=["GET", "POST"])
 @login_required
 def kundbild() -> str:
@@ -120,7 +125,7 @@ def kundbild() -> str:
 
     data = dict(
         info_kundid="Ingen kund vald",
-        account_fetch_status="Ingen registrerad kund vald"
+        account_fetch_status="Ingen registrerad kund vald",
     )
 
     if request.method == "POST":
@@ -132,9 +137,9 @@ def kundbild() -> str:
         if customer is None:
             data["info_kundid"] = "Kund #" + id + " finns ej registrerad."
         else:
-            data["info_kundid"] = "Kund #" + id + ": "+customer.name
-            data["info_personnummer"] = "Personnummer: "+customer.personnummer
-            data["info_city"] = "Stad: "+customer.city
+            data["info_kundid"] = "Kund #" + id + ": " + customer.name
+            data["info_personnummer"] = "Personnummer: " + customer.personnummer
+            data["info_city"] = "Stad: " + customer.city
             data["info_accounts"] = customer.accounts
 
             if len(customer.accounts) > 0:
@@ -142,7 +147,11 @@ def kundbild() -> str:
                 totsaldo = f"{totsaldo:,}"
                 data["info_totsaldo"] = f"Totalt saldo: {totsaldo} SEK"
 
-            data["account_fetch_status"] = len(customer.accounts) > 0 and ("Konton hittade för kund #" + id) or "Kunden har inga konton"
+            data["account_fetch_status"] = (
+                len(customer.accounts) > 0
+                and ("Konton hittade för kund #" + id)
+                or "Kunden har inga konton"
+            )
 
     # visa all info om kunden
     # visa alla konton för kunden
