@@ -2,7 +2,7 @@
 
     <head>
         <title>DABANK</title>
-        <link rel="stylesheet" type="text/css" href="../static/css/main.css">
+        <!-- <link rel="stylesheet" type="text/css" href="../static/css/main.css"> -->
     </head>
 
 
@@ -20,6 +20,18 @@
         <section class="stat-block">
             <h2>Kund Info</h2>
             <p>{{info_kundid}}</p>
+            <p>{{info_name}}</p>
+            <p>{{info_personnummer}}</p>
+            <p>{{info_city}}</p>
+        </section>
+    
+        <section class="stat-block">
+            <h1>Names List</h1>
+            <ul>
+                {% for kontonummer in konton %}
+                    <li>{{ name }}</li>
+                {% endfor %}
+            </ul>
         </section>
     </body>
 

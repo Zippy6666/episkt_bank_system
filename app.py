@@ -17,9 +17,7 @@ from hashlib import sha256
 
 
 app = Flask(__name__)
-app.config[
-    "SQLALCHEMY_DATABASE_URI"
-] = "mysql+mysqlconnector://root:my-secret-pw@localhost:3306/bnk"
+app.config["SQLALCHEMY_DATABASE_URI"] = "mysql+mysqlconnector://root:my-secret-pw@localhost:3306/bnk"
 app.config["SECRET_KEY"] = os.environ.get("LoginSecretKey")
 
 login_manager = LoginManager(app)
@@ -39,7 +37,7 @@ migrate = Migrate(app, db)
 @login_manager.user_loader
 def load_user(user_id: int) -> SuperUser:
     """Login manager load user"""
-    return SuperUser.query.get(user_id)
+    return SuperUser.query.filter(SuperUser.id == user_id).first()
 
 
 def get_user(email: str) -> SuperUser:
@@ -104,7 +102,7 @@ def index() -> str:
 
 def get_customer(id: int):
     """Aquire customer from database by ID."""
-    return Customer.query.get(id)
+    return Customer.query.filter(Customer.id == id).first()
 
 
 @app.route("/kundbild", methods=["GET", "POST"])
@@ -113,15 +111,24 @@ def kundbild() -> str:
     """Kundbild"""
 
     data = dict(
-        input_kundid="",
         info_kundid="Ingen kund vald",
     )
 
-    kund_id = request.form["kundid"]
-
     if request.method == "POST":
-        data["input_kundid"] = kund_id  # keeps the id in the input field
-        data["info_kundid"] = "Kund #" + data["input_kundid"] + ":"
+        id = request.form["kundid"]
+        customer = get_customer(id)
+
+        data["input_kundid"] = id  # keeps the id in the input field
+
+        if customer is None:
+            data["info_kundid"] = "Kund #" + id + " finns ej registrerad."
+        else:
+            data["info_kundid"] = "Kund #" + id + ": "+customer.name
+            data["info_personnummer"] = "Personnummer: "+customer.personnummer
+            data["info_city"] = "Stad: "+customer.city
+
+
+        print("customer", customer)
 
     # visa all info om kunden
     # visa alla konton för kunden

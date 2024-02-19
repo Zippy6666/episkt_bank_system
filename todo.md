@@ -16,8 +16,8 @@ STEAL CODE FROM steffes SUPERSHOP XDDDDDDDDDDDDD
     - [x] Seeda två användare:
         - [x] stefan.holmberg@systementor.se och Hejsan123# och som Admin
         - [x] stefan.holmberg@nackademin.se och Hejsan123# och som Cashier
-    - [ ] Det ska gå att ta fram en kundbild genom att ange kundnummer.
-        - [ ] Kundbilden ska visa all information om kunden och alla kundens konton.
+    - [x] Det ska gå att ta fram en kundbild genom att ange kundnummer.
+        - [x] Kundbilden ska visa all information om kunden och alla kundens konton.
         - [ ] Kundbilden ska också visa det totala saldot för kunden genom att summera saldot på kundens konton.
         - [ ] När man klickar på ett kontonummer i kundbilden ska man komma till en kontosida som visar kontonummer och saldo samt en lista med transaktioner i descending order.
     - [ ] Input valideringar, tänk på att kronofogden ska använda systemet.
