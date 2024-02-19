@@ -18,7 +18,7 @@ STEAL CODE FROM steffes SUPERSHOP XDDDDDDDDDDDDD
         - [x] stefan.holmberg@nackademin.se och Hejsan123# och som Cashier
     - [x] Det ska gå att ta fram en kundbild genom att ange kundnummer.
         - [x] Kundbilden ska visa all information om kunden och alla kundens konton.
-        - [ ] Kundbilden ska också visa det totala saldot för kunden genom att summera saldot på kundens konton.
+        - [x] Kundbilden ska också visa det totala saldot för kunden genom att summera saldot på kundens konton.
         - [ ] När man klickar på ett kontonummer i kundbilden ska man komma till en kontosida som visar kontonummer och saldo samt en lista med transaktioner i descending order.
     - [ ] Input valideringar, tänk på att kronofogden ska använda systemet.
     - [ ] Det ska finnas Unit Tester där du skriver tester som testar att det:

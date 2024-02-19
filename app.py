@@ -9,6 +9,7 @@ from models import db, Customer, Account, SuperUser
 from flask_migrate import Migrate, upgrade
 from flask_login import login_required, LoginManager, login_user
 from hashlib import sha256
+from sqlalchemy import func
 
 
 # =====================================================================
@@ -100,7 +101,7 @@ def index() -> str:
     )
 
 
-def get_customer(id: int):
+def get_customer(id: int) -> Customer:
     """Aquire customer from database by ID."""
     return Customer.query.filter(Customer.id == id).first()
 
@@ -112,6 +113,7 @@ def kundbild() -> str:
 
     data = dict(
         info_kundid="Ingen kund vald",
+        account_fetch_status="Ingen registrerad kund vald"
     )
 
     if request.method == "POST":
@@ -126,9 +128,13 @@ def kundbild() -> str:
             data["info_kundid"] = "Kund #" + id + ": "+customer.name
             data["info_personnummer"] = "Personnummer: "+customer.personnummer
             data["info_city"] = "Stad: "+customer.city
+            data["info_accounts"] = customer.accounts
 
+            if len(customer.accounts) > 0:
+                totsaldo = db.session.query(func.sum(Account.saldo)).filter(Account.customer_id == customer.id).scalar()
+                data["info_totsaldo"] = f"Totalt saldo: {totsaldo}"
 
-        print("customer", customer)
+            data["account_fetch_status"] = len(customer.accounts) > 0 and ("Konton hittade för kund #" + id) or "Kunden har inga konton"
 
     # visa all info om kunden
     # visa alla konton för kunden

@@ -9,7 +9,7 @@
     <body>
         <header class="mainheader"> DABANK KUNDBILD </header>
 
-        <h1>Ta fram en kundbild genom kundnummer här</h1>
+        <h1>Ta fram en kundbild genom kund ID här</h1>
 
         <form action="/kundbild" method="post">
             <label for="kundid">Kund ID:</label>
@@ -18,18 +18,20 @@
 
         
         <section class="stat-block">
-            <h2>Kund Info</h2>
+            <h2>Kundinfo</h2>
             <p>{{info_kundid}}</p>
             <p>{{info_name}}</p>
             <p>{{info_personnummer}}</p>
             <p>{{info_city}}</p>
+            <p>{{info_totsaldo}}</p>
         </section>
     
         <section class="stat-block">
-            <h1>Names List</h1>
+            <h1>Kontoöverblick</h1>
+            <p>Status: {{account_fetch_status}}</p>
             <ul>
-                {% for kontonummer in konton %}
-                    <li>{{ name }}</li>
+                {% for kontonummer in info_accounts %}
+                    <li>{{ kontonummer }}</li>
                 {% endfor %}
             </ul>
         </section>

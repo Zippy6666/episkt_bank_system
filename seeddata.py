@@ -2,6 +2,7 @@ from faker import Faker
 from models import Customer, Account, SuperUser, db
 from app import app
 from hashlib import sha256
+import random
 
 
 # =====================================================================
@@ -34,9 +35,10 @@ def seed_data():
             customer = Customer(city=city, personnummer=personnummer, name=name)
 
             # account for customer
-            saldo = fake.random_number(digits=6)
-            kontonummer = str(fake.random_number(digits=12, fix_len=True))
-            account = Account(customer=customer, saldo=saldo, kontonummer=kontonummer)
+            for _ in range(random.randint(0, 3)):
+                saldo = fake.random_number(digits=6)
+                kontonummer = str(fake.random_number(digits=12, fix_len=True))
+                account = Account(customer=customer, saldo=saldo, kontonummer=kontonummer)
 
             db.session.add(customer)
             db.session.add(account)
