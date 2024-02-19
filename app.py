@@ -17,8 +17,10 @@ from hashlib import sha256
 
 
 app = Flask(__name__)
-app.config["SQLALCHEMY_DATABASE_URI"] = "mysql+mysqlconnector://root:my-secret-pw@localhost:3306/bnk"
-app.config["SECRET_KEY"] = os.environ.get('LoginSecretKey')
+app.config[
+    "SQLALCHEMY_DATABASE_URI"
+] = "mysql+mysqlconnector://root:my-secret-pw@localhost:3306/bnk"
+app.config["SECRET_KEY"] = os.environ.get("LoginSecretKey")
 
 login_manager = LoginManager(app)
 login_manager.login_view = "login"
@@ -35,13 +37,13 @@ migrate = Migrate(app, db)
 
 
 @login_manager.user_loader
-def load_user(user_id:int) -> SuperUser:
-    """ Login manager load user """
-    return SuperUser.query.filter(SuperUser.id == user_id).first()
+def load_user(user_id: int) -> SuperUser:
+    """Login manager load user"""
+    return SuperUser.query.get(user_id)
 
 
-def get_user( email:str ) -> SuperUser:
-    """ Gets user by email """
+def get_user(email: str) -> SuperUser:
+    """Gets user by email"""
     return SuperUser.query.filter(SuperUser.email == email).first()
 
 
@@ -56,26 +58,25 @@ def login() -> str:
     errormsg = ""
 
     # login post
-    if request.method == 'POST':
-        email = request.form['email']
+    if request.method == "POST":
+        email = request.form["email"]
         user = get_user(email)
 
         # user email registered in database
         if not user is None:
-            password = request.form['password']
+            password = request.form["password"]
             authorized = check_password(password, user.password)
 
             if authorized:
-                login_user(user) # login
-                return redirect(url_for('index')) # to homepage
+                login_user(user)  # login
+                return redirect(url_for("index"))  # to homepage
             else:
                 errormsg = "The password is incorrect."
-            
+
         else:
             errormsg = "This email is not registered in our database."
-    
 
-    return render_template('login.html', errormsg=errormsg)
+    return render_template("login.html", errormsg=errormsg)
 
 
 # =====================================================================
@@ -88,39 +89,43 @@ def login() -> str:
 def index() -> str:
     """First page, needs login"""
 
-    cquery = Customer.query # customer query
-    aquery = Account.query # account query
+    cquery = Customer.query  # customer query
+    aquery = Account.query  # account query
 
     saldosum = sum(a.saldo for a in aquery.all())
 
-    return render_template("index.html", customercount=cquery.count(), accountcount=aquery.count(), saldosum=f"{saldosum:,}")
+    return render_template(
+        "index.html",
+        customercount=cquery.count(),
+        accountcount=aquery.count(),
+        saldosum=f"{saldosum:,}",
+    )
 
 
-def get_customer():
+def get_customer(id: int):
     """Aquire customer from database by ID."""
-    pass
+    return Customer.query.get(id)
 
 
 @app.route("/kundbild", methods=["GET", "POST"])
 @login_required
 def kundbild() -> str:
-    """ Kundbild """
+    """Kundbild"""
 
     data = dict(
-        input_kundid = "",
+        input_kundid="",
         info_kundid="Ingen kund vald",
     )
 
     kund_id = request.form["kundid"]
 
     if request.method == "POST":
-        data["input_kundid"] = kund_id # keeps the id in the input field
-        data["info_kundid"] = "Kund #"+data["input_kundid"]+":"
-    
+        data["input_kundid"] = kund_id  # keeps the id in the input field
+        data["info_kundid"] = "Kund #" + data["input_kundid"] + ":"
+
     # visa all info om kunden
     # visa alla konton för kunden
     # ex: konto 2: 6666 6666 6666 6666
-
 
     return render_template("kundbild.html", **data)
 
@@ -130,11 +135,9 @@ def kundbild() -> str:
 # =====================================================================
 
 
-
 @app.route("/terms-of-service")
 def tos() -> str:
     return render_template("tos.html")
-
 
 
 @app.route("/privacy-policy")
@@ -148,7 +151,6 @@ def privacy_policy() -> str:
 
 
 def main() -> None:
-
     # flask db migrate -m "Your migration message"
     # flask db upgrade
 

@@ -9,7 +9,7 @@ from hashlib import sha256
 # =====================================================================
 
 
-def create_user( email, password, rolename ):
+def create_user(email, password, rolename):
     pass_encoded = password.encode()
     passhash = sha256(pass_encoded).hexdigest()
     user = SuperUser(email=email, password=passhash, rolename=rolename)
@@ -29,35 +29,32 @@ def seed_data():
         for _ in range(1, 301):
             # customer
             city = fake.city()
-            personnummer = str( fake.random_number(digits=10, fix_len=True) )
+            personnummer = str(fake.random_number(digits=10, fix_len=True))
             name = fake.name()
             customer = Customer(city=city, personnummer=personnummer, name=name)
 
             # account for customer
             saldo = fake.random_number(digits=6)
-            kontonummer = str( fake.random_number(digits=12, fix_len=True) )
+            kontonummer = str(fake.random_number(digits=12, fix_len=True))
             account = Account(customer=customer, saldo=saldo, kontonummer=kontonummer)
 
             db.session.add(customer)
             db.session.add(account)
-        
+
         # seed users
-        create_user( "bruh420@garbagemail.net", "123123123", "Admin" )
-        create_user( "stefan.holmberg@systementor.se", "Hejsan123#", "Admin" )
-        create_user( "stefan.holmberg@nackademin.se", "Hejsan123#", "Cashier" )
+        create_user("bruh420@garbagemail.net", "123123123", "Admin")
+        create_user("stefan.holmberg@systementor.se", "Hejsan123#", "Admin")
+        create_user("stefan.holmberg@nackademin.se", "Hejsan123#", "Cashier")
 
         # commit
         db.session.commit()
 
     except Exception as e:
-
         print(f"Error during data seed: {str(e)}")
         db.session.rollback()  # Rollback the transaction in case of an error
 
     else:
-
         print("Data seeded sucessfully!")
-
 
 
 # =====================================================================
