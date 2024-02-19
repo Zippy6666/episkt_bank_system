@@ -18,7 +18,6 @@ db = SQLAlchemy()
     # Bank customer, can be managed by the big dawgs
 class Customer(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    kundnummer = db.Column(db.String(12), nullable=False, unique=True)
     personnummer = db.Column(db.String(10), nullable=False, unique=True)
     name = db.Column(db.String(80), nullable=False)
     city = db.Column(db.String(80), nullable=False)

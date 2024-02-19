@@ -30,9 +30,8 @@ def seed_data():
             # customer
             city = fake.city()
             personnummer = str( fake.random_number(digits=10, fix_len=True) )
-            kundnummer = str( fake.random_number(digits=12, fix_len=True) )
             name = fake.name()
-            customer = Customer(city=city, personnummer=personnummer, kundnummer=kundnummer, name=name)
+            customer = Customer(city=city, personnummer=personnummer, name=name)
 
             # account for customer
             saldo = fake.random_number(digits=6)

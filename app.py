@@ -109,12 +109,23 @@ def index() -> str:
 @login_required
 def kundbild() -> str:
     data = dict(
-        kundid="",
-        kundinfo="Ingen kund vald",
+        input_kundid = "",
+        info_kundid="Ingen kund vald",
     )
 
+    kund_id = request.form["kundid"]
+
     if request.method == "POST":
-        data["kundid"] = request.form["kundid"]
+        data["input_kundid"] = kund_id # keeps the id in the input field
+        data["info_kundid"] = "Kund #"+data["input_kundid"]+":"
+
+    
+
+    
+    # visa all info om kunden
+    # visa alla konton för kunden
+    # ex: konto 2: 6666 6666 6666 6666
+
 
     return render_template("kundbild.html", **data)
 
