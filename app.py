@@ -1,5 +1,5 @@
 # =====================================================================
-# imports
+# Imports
 # =====================================================================
 
 
@@ -12,32 +12,25 @@ from hashlib import sha256
 
 
 # =====================================================================
-# essential stuff
+# Essentials
 # =====================================================================
 
 
-# app
 app = Flask(__name__)
 app.config["SQLALCHEMY_DATABASE_URI"] = "mysql+mysqlconnector://root:my-secret-pw@localhost:3306/bnk"
 app.config["SECRET_KEY"] = os.environ.get('LoginSecretKey')
 
-
-# login manager
 login_manager = LoginManager(app)
 login_manager.login_view = "login"
 
-
-# db
 db.app = app
 db.init_app(app)
 
-
-# migrate
 migrate = Migrate(app, db)
 
 
 # =====================================================================
-# login
+# Login
 # =====================================================================
 
 
@@ -86,15 +79,14 @@ def login() -> str:
 
 
 # =====================================================================
-# administrate
+# Administration
 # =====================================================================
 
 
-# first page, needs login
 @app.route("/")
 @login_required
 def index() -> str:
-    # Show some statistics on the start page
+    """First page, needs login"""
 
     cquery = Customer.query # customer query
     aquery = Account.query # account query
@@ -104,10 +96,16 @@ def index() -> str:
     return render_template("index.html", customercount=cquery.count(), accountcount=aquery.count(), saldosum=f"{saldosum:,}")
 
 
-# kundbild
+def get_customer():
+    """Aquire customer from database by ID."""
+    pass
+
+
 @app.route("/kundbild", methods=["GET", "POST"])
 @login_required
 def kundbild() -> str:
+    """ Kundbild """
+
     data = dict(
         input_kundid = "",
         info_kundid="Ingen kund vald",
@@ -118,9 +116,6 @@ def kundbild() -> str:
     if request.method == "POST":
         data["input_kundid"] = kund_id # keeps the id in the input field
         data["info_kundid"] = "Kund #"+data["input_kundid"]+":"
-
-    
-
     
     # visa all info om kunden
     # visa alla konton för kunden
@@ -131,30 +126,32 @@ def kundbild() -> str:
 
 
 # =====================================================================
-# misc
+# Misc
 # =====================================================================
 
 
-# tos
+
 @app.route("/terms-of-service")
 def tos() -> str:
     return render_template("tos.html")
 
 
-# privacy policy
+
 @app.route("/privacy-policy")
 def privacy_policy() -> str:
     return render_template("privacy-policy.html")
 
 
 # =====================================================================
-# main
+# Main
 # =====================================================================
 
 
 def main() -> None:
+
     # flask db migrate -m "Your migration message"
     # flask db upgrade
+
     with app.app_context():
         upgrade()
 
