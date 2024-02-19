@@ -156,13 +156,13 @@ def kundbild() -> str:
 # =====================================================================
 
 
-@app.route("/kundbild", methods=["GET", "POST"])
+@app.route("/kundsokning", methods=["GET", "POST"])
 @login_required
 def kundsokning():
     data = dict(
         # något = "något",
     )
-    return render_template("kundbild.html", **data)
+    return render_template("kundsearch.html", **data)
 
 
 # =====================================================================

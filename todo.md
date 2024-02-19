@@ -25,9 +25,9 @@ STEAL CODE FROM steffes SUPERSHOP XDDDDDDDDDDDDD
         - [ ] Sökresultatet ska vara paginerat (50 resultat i taget och så ska man kunna bläddra till nästa/tidigare sida).
         - [ ] Klickar man på en kund ska man komma till kundbilden.
     - [ ] Lägg till en kontobild där man kan se transaktioner för ett individuellt konto.
-    - [ ] Systemet ska också hantera insättningar, uttag och överföringar mellan konton.
-    - [ ] Det ska inte gå att ändra saldo direkt på ett konto - alltid via en transaktion.
-    - [ ] Det ska framgå tydligt om någon försöker ta ut eller överföra mer pengar än vad som finns på kontot.
+        - [ ] Systemet ska också hantera insättningar, uttag och överföringar mellan konton.
+        - [ ] Det ska inte gå att ändra saldo direkt på ett konto - alltid via en transaktion.
+        - [ ] Det ska framgå tydligt om någon försöker ta ut eller överföra mer pengar än vad som finns på kontot.
     - [ ] Driftsätt din lösning och databas till Azure.
     - [ ] Input valideringar, tänk på att kronofogden ska använda systemet.
     - [ ] Det ska finnas Unit Tester där du skriver tester som testar att det:
