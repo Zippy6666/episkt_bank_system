@@ -31,9 +31,12 @@ migrate = Migrate(app, db)
 
 
 # =====================================================================
-# Login
+# Services
 # =====================================================================
 
+def get_customer(id: int) -> Customer:
+    """Aquire customer from database by ID."""
+    return Customer.query.filter(Customer.id == id).first()
 
 @login_manager.user_loader
 def load_user(user_id: int) -> SuperUser:
@@ -49,6 +52,11 @@ def get_user(email: str) -> SuperUser:
 def check_password(input_password, stored_hash):
     input_hash = sha256(input_password.encode()).hexdigest()
     return input_hash == stored_hash
+
+
+# =====================================================================
+# Login
+# =====================================================================
 
 
 # login page
@@ -79,7 +87,7 @@ def login() -> str:
 
 
 # =====================================================================
-# Administration
+# Index
 # =====================================================================
 
 
@@ -101,10 +109,9 @@ def index() -> str:
     )
 
 
-def get_customer(id: int) -> Customer:
-    """Aquire customer from database by ID."""
-    return Customer.query.filter(Customer.id == id).first()
-
+# =====================================================================
+# Kundbild
+# =====================================================================
 
 @app.route("/kundbild", methods=["GET", "POST"])
 @login_required
@@ -131,8 +138,9 @@ def kundbild() -> str:
             data["info_accounts"] = customer.accounts
 
             if len(customer.accounts) > 0:
-                totsaldo = db.session.query(func.sum(Account.saldo)).filter(Account.customer_id == customer.id).scalar()
-                data["info_totsaldo"] = f"Totalt saldo: {totsaldo}"
+                totsaldo = sum(a.saldo for a in Account.query.all())
+                totsaldo = f"{totsaldo:,}"
+                data["info_totsaldo"] = f"Totalt saldo: {totsaldo} SEK"
 
             data["account_fetch_status"] = len(customer.accounts) > 0 and ("Konton hittade för kund #" + id) or "Kunden har inga konton"
 
@@ -144,7 +152,21 @@ def kundbild() -> str:
 
 
 # =====================================================================
-# Misc
+# Kundsökning
+# =====================================================================
+
+
+@app.route("/kundbild", methods=["GET", "POST"])
+@login_required
+def kundsokning():
+    data = dict(
+        # något = "något",
+    )
+    return render_template("kundbild.html", **data)
+
+
+# =====================================================================
+# TOS/Privacy
 # =====================================================================
 
 

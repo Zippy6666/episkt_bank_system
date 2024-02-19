@@ -30,8 +30,8 @@
             <h1>Kontoöverblick</h1>
             <p>Status: {{account_fetch_status}}</p>
             <ul>
-                {% for kontonummer in info_accounts %}
-                    <li>{{ kontonummer }}</li>
+                {% for account in info_accounts %}
+                    <li>Konto #{{ account.id }} ({{ account.kontonummer }})</li>
                 {% endfor %}
             </ul>
         </section>

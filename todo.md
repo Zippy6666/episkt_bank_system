@@ -1,8 +1,7 @@
->>> TODO <<<
+# TODO
 
 USE BOOTSTRÄP PIPPA!!!!!!!!!!!!!!!
 STEAL CODE FROM steffes SUPERSHOP XDDDDDDDDDDDDD
-
 
 
 - [ ] G - Administrationssystem för en bank.
@@ -20,10 +19,6 @@ STEAL CODE FROM steffes SUPERSHOP XDDDDDDDDDDDDD
         - [x] Kundbilden ska visa all information om kunden och alla kundens konton.
         - [x] Kundbilden ska också visa det totala saldot för kunden genom att summera saldot på kundens konton.
         - [ ] När man klickar på ett kontonummer i kundbilden ska man komma till en kontosida som visar kontonummer och saldo samt en lista med transaktioner i descending order.
-    - [ ] Input valideringar, tänk på att kronofogden ska använda systemet.
-    - [ ] Det ska finnas Unit Tester där du skriver tester som testar att det:
-        - [ ] inte går att ta ut eller överföra mer pengar än det finns på kontot.
-        - [ ] gå att sätta in eller ta ut negativa belopp.
     - [ ] Det ska gå att söka efter kund på namn och stad
         - [ ] En lista ska visas med kundnummer och personnummer, namn, adress, city som sökresultat.
         - [ ] Sökresultatet ska vara möjligt att sortera. Första klicket på en kolumn = asc, sen desc, sen asc etc etc
@@ -34,6 +29,10 @@ STEAL CODE FROM steffes SUPERSHOP XDDDDDDDDDDDDD
     - [ ] Det ska inte gå att ändra saldo direkt på ett konto - alltid via en transaktion.
     - [ ] Det ska framgå tydligt om någon försöker ta ut eller överföra mer pengar än vad som finns på kontot.
     - [ ] Driftsätt din lösning och databas till Azure.
+    - [ ] Input valideringar, tänk på att kronofogden ska använda systemet.
+    - [ ] Det ska finnas Unit Tester där du skriver tester som testar att det:
+        - [ ] inte går att ta ut eller överföra mer pengar än det finns på kontot.
+        - [ ] gå att sätta in eller ta ut negativa belopp.
     - [ ] Dubbelkolla om dom här instruktionerna ens stämmer
 
 
