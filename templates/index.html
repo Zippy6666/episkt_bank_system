@@ -1,8 +1,8 @@
 <html>
 
     <head>
-        <title>DABANK</title>
-        <!-- <link rel="stylesheet" type="text/css" href="../static/css/main.css"> -->
+        <title>ZipBank</title>
+        <link rel="stylesheet" type="text/css" href="../static/css/main.css">
     </head>
 
 
@@ -12,27 +12,16 @@
 
 
         <header>
-
-            <div class="mainheader">DABANK STATISTICS</div>
-
-            <div class="dropdown">
-
-                <button class="sidebutton" onclick="homeButtonClick()">Hem</button>
-                <button class="sidebutton" onclick="kundbildButtonClick()">Kundbild</button>
-                <button class="sidebutton" onclick="kundsearchButtonClick()">Kundsökning</button>
-                <button class="sidebutton" onclick="handleTransactionsButtonClick()">Hantera Transaktioner</button>
-
-            </div>
-
+            <div class="mainheader">Welcome to ZipBank!</div>
         </header>
 
 
-        <!-- <h1>Customers</h1>
-        <ul>
-            {% for customer in customers %}
-                <li>{{ customer.id }}</li>
-            {% endfor %}
-        </ul> -->
+        <div class="dropdown">
+            <button class="sidebutton" onclick="homeButtonClick()">Hem</button>
+            <button class="sidebutton" onclick="kundbildButtonClick()">Kundbild</button>
+            <button class="sidebutton" onclick="kundsearchButtonClick()">Kundsökning</button>
+            <button class="sidebutton" onclick="handleTransactionsButtonClick()">Hantera Transaktioner</button>
+        </div>
 
 
         <section class="stat-block">
@@ -51,11 +40,6 @@
             <h2>Saldo Sum</h2>
             <p>{{saldosum}} SEK</p>
         </section>
-
-
-        <!--images-->
-        <!-- <img class="iq_image" src="../static/img/iq.png" alt="kronofogden iq">
-        <img class="gpt_image" src="../static/img/chatgpt.png" alt="kronofogden chatgpt"> -->
 
 
         <!--Javascript-->

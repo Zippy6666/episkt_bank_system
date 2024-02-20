@@ -18,9 +18,9 @@
         - [ ] När man klickar på ett kontonummer i kundbilden ska man komma till en kontosida som visar kontonummer och saldo samt en lista med transaktioner i descending order.
     - [x] Det ska gå att söka efter kund på namn och stad
         - [x] En lista ska visas med kundnummer och personnummer, namn, adress, city som sökresultat.
-        - [ ] Sökresultatet ska vara möjligt att sortera. Första klicket på en kolumn = asc, sen desc, sen asc etc etc
+        - [x] Sökresultatet ska vara möjligt att sortera. Första klicket på en kolumn = asc, sen desc, sen asc etc etc
         - [ ] Sökresultatet ska vara paginerat (50 resultat i taget och så ska man kunna bläddra till nästa/tidigare sida).
-        - [ ] Klickar man på en kund ska man komma till kundbilden.
+        - [x] Klickar man på en kund ska man komma till kundbilden.
     - [ ] Lägg till en kontobild där man kan se transaktioner för ett individuellt konto.
         - [ ] Systemet ska också hantera insättningar, uttag och överföringar mellan konton.
         - [ ] Det ska inte gå att ändra saldo direkt på ett konto - alltid via en transaktion.
@@ -29,6 +29,7 @@
     - [ ] Det ska finnas Unit Tester där du skriver tester som testar att det:
         - [ ] inte går att ta ut eller överföra mer pengar än det finns på kontot.
         - [ ] gå att sätta in eller ta ut negativa belopp.
+    - [ ] Make it look najs
     - [ ] Dubbelkolla om dom här instruktionerna ens stämmer
 
 

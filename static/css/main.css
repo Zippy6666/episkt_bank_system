@@ -1,18 +1,12 @@
-/*
-====================================================================================================
-    basic
-====================================================================================================
-*/
-
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background-color: #f4f4f4;
-    margin: 0;
+    margin: 10;
     padding: 0;
     box-sizing: border-box;
 }
 
-
+/* 
 .dropdown-content {
     display: none;
     position: absolute;
@@ -74,12 +68,6 @@ img {
 }
 
 
-/*
-====================================================================================================
-    form stuff
-====================================================================================================
-*/
-
 form {
     width: 100%;
     max-width: 400px;
@@ -117,18 +105,16 @@ button {
 }
 
 
-/* CSS for Three Blocks Layout */
 .stat-block {
-    width: 30%; /* Adjust the width as needed */
+    width: 30%;
     display: inline-block;
-    margin: 10px; /* Adjust the margin as needed for spacing */
-    vertical-align: top; /* Align blocks at the top */
+    margin: 10px; 
+    vertical-align: top;
     box-sizing: border-box;
-    border: 1px solid #ccc; /* Optional: Add borders for visual separation */
+    border: 1px solid #ccc;
     padding: 15px;
 }
 
-/* Optional: Add a background color or any other styling */
 .stat-block h2 {
     color: #333;
 }
@@ -136,4 +122,4 @@ button {
 .stat-block p {
     color: #666;
     font-weight: bold;
-}
+} */

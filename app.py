@@ -10,7 +10,6 @@ from flask_migrate import Migrate, upgrade
 from flask_login import login_required, LoginManager, login_user
 from hashlib import sha256
 from sqlalchemy import or_
-from enum import Enum
 
 
 # =====================================================================
@@ -59,12 +58,28 @@ def check_password(input_password:str, stored_hash:str) -> bool:
     return input_hash == stored_hash
 
 
-def customer_search(search_str:str, sort_by: str="id") -> list:
+def customer_search(search_str:str, sort_by: str="id", sort_direction:str="asc") -> list:
     str_in_name = Customer.name.ilike(f"%{search_str}%")
     str_in_city = Customer.city.ilike(f"%{search_str}%")
 
     query = Customer.query.filter(or_(str_in_name, str_in_city))
-    query.order_by(getattr(Customer, sort_by))
+
+    match sort_by:
+        case "id":
+            column = Customer.id
+        case "name":
+            column = Customer.name
+        case "personnummer":
+            column = Customer.personnummer
+        case "city":
+            column = Customer.city
+        case "adress":
+            column = Customer.adress
+
+    if sort_direction == "desc":
+        query = query.order_by(column.desc())
+    else:
+        query = query.order_by(column.asc())
 
     return query.all()
 
@@ -134,16 +149,19 @@ def index() -> str:
 def kundbild() -> str:
     """Kundbild"""
 
+    force_id = request.args.get("id")
+
     data = dict(
         info_kundid="Ingen kund vald",
         account_fetch_status="Ingen registrerad kund vald",
+        allow_input = force_id is None,
     )
 
-    if request.method == "POST":
-        id = request.form["kundid"]
+    if request.method == "POST" or force_id:
+        id = force_id or request.form["kundid"]
         customer = get_customer(id)
 
-        data["input_kundid"] = id  # keeps the id in the input field
+        data["input_kundid"] = id
 
         if customer is None:
             data["info_kundid"] = "Kund #" + id + " finns ej registrerad."
@@ -178,20 +196,27 @@ def kundbild() -> str:
 
 @app.route("/kundsokning", methods=["GET", "POST"])
 @login_required
-def kundsokning():
+def kundsokning() -> str:
     data = dict(
         search_h1 = "Sökningsresultat för kundsökningen visas här.",
         results_count = 0,
     )
 
     sort_by = request.args.get('sort_by')
+    sort_direction = request.args.get('sort_direction', 'asc')
 
     # Show table of customers if we should
     if request.method == "POST" or sort_by:
         search_str =  ("search-bar" in request.form and request.form["search-bar"]) or request.args.get("searchword")
         data["searchbarval"] = search_str
 
-        results = customer_search(search_str, sort_by or "name")
+        results = customer_search(search_str, sort_by or "id", sort_direction)
+        
+        if sort_direction == "asc":
+            data["new_direction"] = "desc"
+        else:
+            data["new_direction"] = "asc"
+
         data["search_h1"] = str( len(results) )+" sökresultat för '"+search_str+"'"
         data["results"] = results
         data["results_count"] = len(results)
