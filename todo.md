@@ -1,9 +1,5 @@
 # TODO
 
-USE BOOTSTRÄP PIPPA!!!!!!!!!!!!!!!
-STEAL CODE FROM steffes SUPERSHOP XDDDDDDDDDDDDD
-DU BEHÖVER ICKE DRIFTSÄTTA DIN ALLT I AZURE (DATABAS+APPLIKATION), MEN BRA FÖR LIA
-
 
 - [ ] G - Administrationssystem för en bank.
     - [x] Inloggning ska vara implementerat

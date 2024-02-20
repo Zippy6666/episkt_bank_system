@@ -9,6 +9,7 @@ from models import db, Customer, Account, SuperUser
 from flask_migrate import Migrate, upgrade
 from flask_login import login_required, LoginManager, login_user
 from hashlib import sha256
+from sqlalchemy import or_
 
 
 # =====================================================================
@@ -52,9 +53,16 @@ def get_user(email: str) -> SuperUser:
     return SuperUser.query.filter(SuperUser.email == email).first()
 
 
-def check_password(input_password, stored_hash):
+def check_password(input_password:str, stored_hash:str) -> bool:
     input_hash = sha256(input_password.encode()).hexdigest()
     return input_hash == stored_hash
+
+
+def customer_search(search_str:str) -> list:
+    str_in_name = Customer.name.ilike(f"%{search_str}%")
+    str_in_city = Customer.city.ilike(f"%{search_str}%")
+
+    return Customer.query.filter(or_(str_in_name, str_in_city)).all()
 
 
 # =====================================================================
@@ -168,13 +176,16 @@ def kundbild() -> str:
 @login_required
 def kundsokning():
     data = dict(
-        search_h1 = "Sökningsresultat för kundsökningen visas här."
+        search_h1 = "Sökningsresultat för kundsökningen visas här.",
+        total_results = 0,
     )
 
     if request.method == "POST":
-        data["searchbarval"] = request.form["search-bar"]
-        data["search_h1"] = "Sökresultat för '"+request.form["search-bar"]+"'"
+        search_str = request.form["search-bar"]
+        data["searchbarval"] = search_str
 
+        all_results = customer_search(search_str)
+        data["search_h1"] = str( len(all_results) )+" sökresultat för '"+search_str+"'"
 
     return render_template("kundsearch.html", **data)
 

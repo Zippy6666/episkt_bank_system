@@ -8,12 +8,21 @@
 
     <body>
 
+        <!-- Search Bar -->
         <form action="/kundsokning" method="post">
             <input type="text" id="search-bar" name="search-bar" placeholder="Search..." value={{searchbarval}}>
             <button type="submit" id="search-button">Search</button>
         </form>
 
+        <!-- Search Header -->
         <h1>{{search_h1}}</h1>
+
+        <!-- Results -->
+        <div id="results-container">
+            {% for result in results %}
+                <div class="result">{{ result }}</div>
+            {% endfor %}
+        </div>
 
     </body>
 
