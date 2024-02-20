@@ -9,7 +9,6 @@ from models import db, Customer, Account, SuperUser
 from flask_migrate import Migrate, upgrade
 from flask_login import login_required, LoginManager, login_user
 from hashlib import sha256
-from sqlalchemy import func
 
 
 # =====================================================================
@@ -143,7 +142,7 @@ def kundbild() -> str:
             data["info_accounts"] = customer.accounts
 
             if len(customer.accounts) > 0:
-                totsaldo = sum(a.saldo for a in Account.query.all())
+                totsaldo = sum(a.saldo for a in Account.query.all() if a.customer_id==int(id))
                 totsaldo = f"{totsaldo:,}"
                 data["info_totsaldo"] = f"Totalt saldo: {totsaldo} SEK"
 

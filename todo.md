@@ -2,6 +2,7 @@
 
 USE BOOTSTRÄP PIPPA!!!!!!!!!!!!!!!
 STEAL CODE FROM steffes SUPERSHOP XDDDDDDDDDDDDD
+DU BEHÖVER ICKE DRIFTSÄTTA DIN ALLT I AZURE (DATABAS+APPLIKATION), MEN BRA FÖR LIA
 
 
 - [ ] G - Administrationssystem för en bank.
@@ -28,7 +29,6 @@ STEAL CODE FROM steffes SUPERSHOP XDDDDDDDDDDDDD
         - [ ] Systemet ska också hantera insättningar, uttag och överföringar mellan konton.
         - [ ] Det ska inte gå att ändra saldo direkt på ett konto - alltid via en transaktion.
         - [ ] Det ska framgå tydligt om någon försöker ta ut eller överföra mer pengar än vad som finns på kontot.
-    - [ ] Driftsätt din lösning och databas till Azure.
     - [ ] Input valideringar, tänk på att kronofogden ska använda systemet.
     - [ ] Det ska finnas Unit Tester där du skriver tester som testar att det:
         - [ ] inte går att ta ut eller överföra mer pengar än det finns på kontot.
