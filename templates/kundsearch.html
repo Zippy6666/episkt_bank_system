@@ -18,11 +18,30 @@
         <h1>{{search_h1}}</h1>
 
         <!-- Results -->
-        <div id="results-container">
-            {% for result in results %}
-                <div class="result">{{ result }}</div>
-            {% endfor %}
-        </div>
+        {% if results_count > 0 %}
+        <table>
+            <thead>
+                <tr>
+                    <th><a href="?sort_by=id&searchword={{searchbarval}}">ID</a></th>
+                    <th><a href="?sort_by=name&searchword={{searchbarval}}">Name</a></th>
+                    <th><a href="?sort_by=personnummer&searchword={{searchbarval}}">Personnummer</a></th>
+                    <th><a href="?sort_by=city&searchword={{searchbarval}}">City</a></th>
+                    <th><a href="?sort_by=adress&searchword={{searchbarval}}">Address</a></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for customer in results %}
+                    <tr>
+                        <td>{{ customer.id }}</td>
+                        <td>{{ customer.name or "N/A" }}</td>
+                        <td>{{ customer.personnummer or "N/A" }}</td>
+                        <td>{{ customer.city or "N/A" }}</td>
+                        <td>{{ customer.adress or "N/A" }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% endif %}
 
     </body>
 

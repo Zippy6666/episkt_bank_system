@@ -16,8 +16,8 @@
         - [x] Kundbilden ska visa all information om kunden och alla kundens konton.
         - [x] Kundbilden ska också visa det totala saldot för kunden genom att summera saldot på kundens konton.
         - [ ] När man klickar på ett kontonummer i kundbilden ska man komma till en kontosida som visar kontonummer och saldo samt en lista med transaktioner i descending order.
-    - [ ] Det ska gå att söka efter kund på namn och stad
-        - [ ] En lista ska visas med kundnummer och personnummer, namn, adress, city som sökresultat.
+    - [x] Det ska gå att söka efter kund på namn och stad
+        - [x] En lista ska visas med kundnummer och personnummer, namn, adress, city som sökresultat.
         - [ ] Sökresultatet ska vara möjligt att sortera. Första klicket på en kolumn = asc, sen desc, sen asc etc etc
         - [ ] Sökresultatet ska vara paginerat (50 resultat i taget och så ska man kunna bläddra till nästa/tidigare sida).
         - [ ] Klickar man på en kund ska man komma till kundbilden.

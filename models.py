@@ -21,6 +21,7 @@ class Customer(db.Model):
     personnummer = db.Column(db.String(10), nullable=False, unique=True)
     name = db.Column(db.String(80), nullable=False)
     city = db.Column(db.String(80), nullable=False)
+    adress = db.Column(db.String(80), nullable=False)
     accounts = db.relationship("Account", backref="customer", lazy=True)
 
 

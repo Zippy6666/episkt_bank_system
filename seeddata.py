@@ -32,7 +32,8 @@ def seed_data():
             city = fake.city()
             personnummer = str(fake.random_number(digits=10, fix_len=True))
             name = fake.name()
-            customer = Customer(city=city, personnummer=personnummer, name=name)
+            adress = fake.street_address()
+            customer = Customer(city=city, personnummer=personnummer, name=name, adress=adress)
 
             # account for customer
             for _ in range(random.randint(0, 3)):

@@ -10,6 +10,7 @@ from flask_migrate import Migrate, upgrade
 from flask_login import login_required, LoginManager, login_user
 from hashlib import sha256
 from sqlalchemy import or_
+from enum import Enum
 
 
 # =====================================================================
@@ -58,11 +59,14 @@ def check_password(input_password:str, stored_hash:str) -> bool:
     return input_hash == stored_hash
 
 
-def customer_search(search_str:str) -> list:
+def customer_search(search_str:str, sort_by: str="id") -> list:
     str_in_name = Customer.name.ilike(f"%{search_str}%")
     str_in_city = Customer.city.ilike(f"%{search_str}%")
 
-    return Customer.query.filter(or_(str_in_name, str_in_city)).all()
+    query = Customer.query.filter(or_(str_in_name, str_in_city))
+    query.order_by(getattr(Customer, sort_by))
+
+    return query.all()
 
 
 # =====================================================================
@@ -177,15 +181,20 @@ def kundbild() -> str:
 def kundsokning():
     data = dict(
         search_h1 = "Sökningsresultat för kundsökningen visas här.",
-        total_results = 0,
+        results_count = 0,
     )
 
-    if request.method == "POST":
-        search_str = request.form["search-bar"]
+    sort_by = request.args.get('sort_by')
+
+    # Show table of customers if we should
+    if request.method == "POST" or sort_by:
+        search_str =  ("search-bar" in request.form and request.form["search-bar"]) or request.args.get("searchword")
         data["searchbarval"] = search_str
 
-        all_results = customer_search(search_str)
-        data["search_h1"] = str( len(all_results) )+" sökresultat för '"+search_str+"'"
+        results = customer_search(search_str, sort_by or "name")
+        data["search_h1"] = str( len(results) )+" sökresultat för '"+search_str+"'"
+        data["results"] = results
+        data["results_count"] = len(results)
 
     return render_template("kundsearch.html", **data)
 
