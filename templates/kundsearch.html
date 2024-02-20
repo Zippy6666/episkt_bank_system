@@ -8,10 +8,12 @@
 
     <body>
 
-        <form action="/kundsokning" method="get">
-            <input type="text" id="search-bar" name="q" placeholder="Search...">
+        <form action="/kundsokning" method="post">
+            <input type="text" id="search-bar" name="search-bar" placeholder="Search..." value={{searchbarval}}>
             <button type="submit" id="search-button">Search</button>
         </form>
+
+        <h1>{{search_h1}}</h1>
 
     </body>
 

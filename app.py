@@ -3,7 +3,7 @@
 # =====================================================================
 
 
-import webbrowser, os
+import webbrowser, os, threading
 from flask import Flask, render_template, request, redirect, url_for
 from models import db, Customer, Account, SuperUser
 from flask_migrate import Migrate, upgrade
@@ -168,8 +168,14 @@ def kundbild() -> str:
 @login_required
 def kundsokning():
     data = dict(
-        # något = "något",
+        search_h1 = "Sökningsresultat för kundsökningen visas här."
     )
+
+    if request.method == "POST":
+        data["searchbarval"] = request.form["search-bar"]
+        data["search_h1"] = "Sökresultat för '"+request.form["search-bar"]+"'"
+
+
     return render_template("kundsearch.html", **data)
 
 
@@ -193,6 +199,10 @@ def privacy_policy() -> str:
 # =====================================================================
 
 
+def open_browser():
+    webbrowser.open("http://127.0.0.1:5000/")
+
+
 def main() -> None:
     # flask db migrate -m "Your migration message"
     # flask db upgrade
@@ -200,8 +210,13 @@ def main() -> None:
     with app.app_context():
         upgrade()
 
-    webbrowser.open("http://127.0.0.1:5000/")
-    app.run("127.0.0.1", port=5000)
+
+    # Open the browser only when running in the main thread
+    if threading.current_thread() == threading.main_thread():
+        threading.Timer(1, open_browser).start()
+
+
+    app.run("127.0.0.1", port=5000, debug=True)
 
 
 if __name__ == "__main__":
