@@ -38,7 +38,8 @@ class Account(db.Model):
 class Transaction(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     belopp = db.Column(db.Float, nullable=False)
-    typ = db.Column(db.String(6), nullable=False)
+    type = db.Column(db.String(6), nullable=False)
+    timestamp = db.Column(db.DateTime, nullable=False)
     account_id = db.Column(db.Integer, db.ForeignKey("account.id"), nullable=False)
 
 
