@@ -19,7 +19,7 @@
     - [x] Det ska gå att söka efter kund på namn och stad
         - [x] En lista ska visas med kundnummer och personnummer, namn, adress, city som sökresultat.
         - [x] Sökresultatet ska vara möjligt att sortera. Första klicket på en kolumn = asc, sen desc, sen asc etc etc
-        - [ ] Sökresultatet ska vara paginerat (50 resultat i taget och så ska man kunna bläddra till nästa/tidigare sida).
+        - [x] Sökresultatet ska vara paginerat (50 resultat i taget och så ska man kunna bläddra till nästa/tidigare sida).
         - [x] Klickar man på en kund ska man komma till kundbilden.
     - [ ] Lägg till en kontobild där man kan se transaktioner för ett individuellt konto.
         - [ ] Systemet ska också hantera insättningar, uttag och överföringar mellan konton.

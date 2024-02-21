@@ -208,7 +208,10 @@ def kundsokning() -> str:
 
     sort_by = request.args.get("sort_by")
     sort_direction = request.args.get("sort_direction", "asc")
-    page = request.args.get("page", 1)
+    page = request.args.get("page")
+
+    if isinstance(page, str):
+        page = int(page)
 
     # Show table of customers if we should
     if request.method == "POST" or sort_by or page:
@@ -217,7 +220,7 @@ def kundsokning() -> str:
         ) or request.args.get("searchword")
         data["searchbarval"] = search_str
 
-        results, results_count = customer_search(search_str, sort_by or "id", sort_direction, page)
+        results, results_count = customer_search(search_str, sort_by or "id", sort_direction, page or 1)
 
         if sort_direction == "asc":
             data["new_direction"] = "desc"
@@ -227,8 +230,22 @@ def kundsokning() -> str:
         data["search_h1"] = str(results_count) + " sökresultat för '" + search_str + "'"
         data["results"] = results
         data["results_count"] = results_count
+        data["page"] = page or 1
 
     return render_template("kundsearch.html", **data)
+
+
+# =====================================================================
+# Kontobild
+# =====================================================================
+
+
+@app.route("/kontobild", methods=["GET", "POST"])
+@login_required
+def kontobild() -> str:
+    konto_id = request.args.get("id")
+    print("TEST", konto_id)
+    return render_template("kontobild.html")
 
 
 # =====================================================================
