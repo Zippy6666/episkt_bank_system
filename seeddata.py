@@ -1,12 +1,12 @@
 from faker import Faker
-from models import Customer, Account, SuperUser, db
+from models import Customer, Account, SuperUser, Transaction, db
 from app import app
 from hashlib import sha256
 import random
 
 
 # =====================================================================
-# seed
+# Seed
 # =====================================================================
 
 
@@ -22,13 +22,14 @@ def seed_data():
 
     try:
         # Delete old data
+        db.session.query(Transaction).delete()
         db.session.query(Account).delete()
         db.session.query(Customer).delete()
         db.session.query(SuperUser).delete()
         db.session.commit()
 
         for _ in range(1, 301):
-            # customer
+            # Customer
             city = fake.city()
             personnummer = str(fake.random_number(digits=10, fix_len=True))
             name = fake.name()
@@ -37,7 +38,7 @@ def seed_data():
                 city=city, personnummer=personnummer, name=name, adress=adress
             )
 
-            # account for customer
+            # Account for customer
             for _ in range(random.randint(0, 3)):
                 saldo = fake.random_number(digits=6)
                 kontonummer = str(fake.random_number(digits=12, fix_len=True))
@@ -45,19 +46,37 @@ def seed_data():
                     customer=customer, saldo=saldo, kontonummer=kontonummer
                 )
 
-            db.session.add(customer)
-            db.session.add(account)
+                # Transaction for account
+                for _ in range(random.randrange(0, 500)):
+                    belopp = fake.random_number(digits=3)
+                    type_ = random.choice(("INSÄTT","UTTAG"))
+                    timestamp = fake.date_between(start_date='-365d', end_date='today')
+                    transaction = Transaction(
+                        account=account,
+                        belopp=belopp,
+                        type=type_,
+                        timestamp=timestamp,
+                    )
 
-        # seed users
+                    db.session.add(transaction)
+
+                
+                db.session.add(account)
+
+
+            db.session.add(customer)
+            
+
+        # Seed users
         create_user("bruh420@garbagemail.net", "123123123", "Admin")
         create_user("stefan.holmberg@systementor.se", "Hejsan123#", "Admin")
         create_user("stefan.holmberg@nackademin.se", "Hejsan123#", "Cashier")
 
-        # commit
+        # Commit
         db.session.commit()
 
     except Exception as e:
-        print(f"Error during data seed: {str(e)}")
+        print(f"Error during data seed: {e}")
         db.session.rollback()  # Rollback the transaction in case of an error
 
     else:
@@ -65,7 +84,7 @@ def seed_data():
 
 
 # =====================================================================
-# main
+# Main
 # =====================================================================
 
 
