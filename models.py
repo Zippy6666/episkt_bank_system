@@ -41,6 +41,7 @@ class Transaction(db.Model):
     typ = db.Column(db.String(6), nullable=False)
     account_id = db.Column(db.Integer, db.ForeignKey("account.id"), nullable=False)
 
+
 # User, such as admin or cashier
 class SuperUser(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)

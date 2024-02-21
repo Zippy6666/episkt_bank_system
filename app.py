@@ -5,9 +5,9 @@
 
 import webbrowser, os, threading
 from flask import Flask, render_template, request, redirect, url_for
-from models import db, Customer, Account, SuperUser
 from flask_migrate import Migrate, upgrade
 from flask_login import login_required, LoginManager, login_user
+from models import db, Customer, Account, SuperUser
 from hashlib import sha256
 from sqlalchemy import or_
 
@@ -53,12 +53,14 @@ def get_user(email: str) -> SuperUser:
     return SuperUser.query.filter(SuperUser.email == email).first()
 
 
-def check_password(input_password:str, stored_hash:str) -> bool:
+def check_password(input_password: str, stored_hash: str) -> bool:
     input_hash = sha256(input_password.encode()).hexdigest()
     return input_hash == stored_hash
 
 
-def customer_search(search_str:str, sort_by: str="id", sort_direction:str="asc") -> list:
+def customer_search(
+    search_str: str, sort_by: str = "id", sort_direction: str = "asc", page: int = 1
+):
     str_in_name = Customer.name.ilike(f"%{search_str}%")
     str_in_city = Customer.city.ilike(f"%{search_str}%")
 
@@ -81,7 +83,7 @@ def customer_search(search_str:str, sort_by: str="id", sort_direction:str="asc")
     else:
         query = query.order_by(column.asc())
 
-    return query.all()
+    return query.paginate(page=page, per_page=50), query.count()
 
 
 # =====================================================================
@@ -154,7 +156,7 @@ def kundbild() -> str:
     data = dict(
         info_kundid="Ingen kund vald",
         account_fetch_status="Ingen registrerad kund vald",
-        allow_input = force_id is None,
+        allow_input=force_id is None,
     )
 
     if request.method == "POST" or force_id:
@@ -172,7 +174,9 @@ def kundbild() -> str:
             data["info_accounts"] = customer.accounts
 
             if len(customer.accounts) > 0:
-                totsaldo = sum(a.saldo for a in Account.query.all() if a.customer_id==int(id))
+                totsaldo = sum(
+                    a.saldo for a in Account.query.all() if a.customer_id == int(id)
+                )
                 totsaldo = f"{totsaldo:,}"
                 data["info_totsaldo"] = f"Totalt saldo: {totsaldo} SEK"
 
@@ -198,28 +202,31 @@ def kundbild() -> str:
 @login_required
 def kundsokning() -> str:
     data = dict(
-        search_h1 = "Sökningsresultat för kundsökningen visas här.",
-        results_count = 0,
+        search_h1="Sökningsresultat för kundsökningen visas här.",
+        results_count=0,
     )
 
-    sort_by = request.args.get('sort_by')
-    sort_direction = request.args.get('sort_direction', 'asc')
+    sort_by = request.args.get("sort_by")
+    sort_direction = request.args.get("sort_direction", "asc")
+    page = request.args.get("page", 1)
 
     # Show table of customers if we should
-    if request.method == "POST" or sort_by:
-        search_str =  ("search-bar" in request.form and request.form["search-bar"]) or request.args.get("searchword")
+    if request.method == "POST" or sort_by or page:
+        search_str = (
+            "search-bar" in request.form and request.form["search-bar"]
+        ) or request.args.get("searchword")
         data["searchbarval"] = search_str
 
-        results = customer_search(search_str, sort_by or "id", sort_direction)
-        
+        results, results_count = customer_search(search_str, sort_by or "id", sort_direction, page)
+
         if sort_direction == "asc":
             data["new_direction"] = "desc"
         else:
             data["new_direction"] = "asc"
 
-        data["search_h1"] = str( len(results) )+" sökresultat för '"+search_str+"'"
+        data["search_h1"] = str(results_count) + " sökresultat för '" + search_str + "'"
         data["results"] = results
-        data["results_count"] = len(results)
+        data["results_count"] = results_count
 
     return render_template("kundsearch.html", **data)
 
@@ -255,11 +262,9 @@ def main() -> None:
     with app.app_context():
         upgrade()
 
-
     # Open the browser only when running in the main thread
     if threading.current_thread() == threading.main_thread():
         threading.Timer(1, open_browser).start()
-
 
     app.run("127.0.0.1", port=5000, debug=True)
 

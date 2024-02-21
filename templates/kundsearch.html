@@ -1,55 +1,69 @@
 <html>
 
-    <head>
-        <title>ZipBank</title>
-        <link rel="stylesheet" type="text/css" href="../static/css/main.css">
-    </head>
+<head>
+    <title>ZipBank</title>
+    <link rel="stylesheet" type="text/css" href="../static/css/main.css">
+</head>
 
+<body>
+    <header class="mainheader"> Customer Search </header>
 
-    <body>
-        <header class="mainheader"> Customer Search </header>
+    <!-- Search Bar -->
+    <form action="/kundsokning" method="post">
+        <input type="text" id="search-bar" name="search-bar" placeholder="Search..." value={{searchbarval}}>
+        <button type="submit" id="search-button">Search</button>
+    </form>
 
-        <!-- Search Bar -->
-        <form action="/kundsokning" method="post">
-            <input type="text" id="search-bar" name="search-bar" placeholder="Search..." value={{searchbarval}}>
-            <button type="submit" id="search-button">Search</button>
-        </form>
+    <!-- Search Header -->
+    <h1>{{search_h1}}</h1>
 
-        <!-- Search Header -->
-        <h1>{{search_h1}}</h1>
+    <!-- Results -->
+    {% if results_count > 0 %}
+    <table>
+        <thead>
+            <tr>
+                <th><a href="?sort_by=id&searchword={{ searchbarval }}&sort_direction={{ new_direction }}">ID</a></th>
+                <th><a href="?sort_by=name&searchword={{ searchbarval }}&sort_direction={{ new_direction }}">Name</a></th>
+                <th><a href="?sort_by=personnummer&searchword={{ searchbarval }}&sort_direction={{ new_direction }}">Personnummer</a></th>
+                <th><a href="?sort_by=city&searchword={{ searchbarval }}&sort_direction={{ new_direction }}">City</a></th>
+                <th><a href="?sort_by=adress&searchword={{ searchbarval }}&sort_direction={{ new_direction }}">Address</a></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for customer in results.items %}
+            <tr>
+                <td>{{ customer.id }}</td>
+                <td><a href="{{ url_for('kundbild') }}?id={{customer.id}}">{{ customer.name or "N/A" }}</a></td>
+                <td>{{ customer.personnummer or "N/A" }}</td>
+                <td>{{ customer.city or "N/A" }}</td>
+                <td>{{ customer.adress or "N/A" }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 
-        <!-- Results -->
-        {% if results_count > 0 %}
-        <table>
-            <thead>
-                <tr>
-                    <th><a href="?sort_by=id&searchword={{ searchbarval }}&sort_direction={{ new_direction }}">ID</a></th>
-                    <th><a href="?sort_by=name&searchword={{ searchbarval }}&sort_direction={{ new_direction }}">Name</a></th>
-                    <th><a href="?sort_by=personnummer&searchword={{ searchbarval }}&sort_direction={{ new_direction }}">Personnummer</a></th>
-                    <th><a href="?sort_by=city&searchword={{ searchbarval }}&sort_direction={{ new_direction }}">City</a></th>
-                    <th><a href="?sort_by=adress&searchword={{ searchbarval }}&sort_direction={{ new_direction }}">Address</a></th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for customer in results %}
-                    <tr>
-                        <td>{{ customer.id }}</td>
-                        <td><a href="{{ url_for('kundbild') }}?id={{customer.id}}">{{ customer.name or "N/A" }}</a></td>
-                        <td>{{ customer.personnummer or "N/A" }}</td>
-                        <td>{{ customer.city or "N/A" }}</td>
-                        <td>{{ customer.adress or "N/A" }}</td>
-                    </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-        {% endif %}
+    <!-- Pagination -->
+    <div class="pagination">
+        <span class="page-item {% if results.has_prev %}enabled{% else %}disabled{% endif %}">
+            <a href="?page={{ results.prev_num }}&sort_by={{ sort_by }}&searchword={{ searchbarval }}&sort_direction={{ new_direction }}">Previous</a>
+        </span>
+        {% for page_num in results.iter_pages() %}
+        <span class="page-item {% if page_num == results.page %}active{% endif %}">
+            <a href="?page={{ page_num }}&sort_by={{ sort_by }}&searchword={{ searchbarval }}&sort_direction={{ new_direction }}">{{ page_num }}</a>
+        </span>
+        {% endfor %}
+        <span class="page-item {% if results.has_next %}enabled{% else %}disabled{% endif %}">
+            <a href="?page={{ results.next_num }}&sort_by={{ sort_by }}&searchword={{ searchbarval }}&sort_direction={{ new_direction }}">Next</a>
+        </span>
+    </div>
 
-    </body>
+    {% endif %}
 
+</body>
 
-    <footer>
-        <p>&copy; 2024 Zippy Kronofogden Banksystems AB. All rights reserved.</p>
-        <p><a href="/privacy-policy">Privacy Policy</a> | <a href="/terms-of-service">Terms of Service</a></p>
-    </footer>
+<footer>
+    <p>&copy; 2024 Zippy Kronofogden Banksystems AB. All rights reserved.</p>
+    <p><a href="/privacy-policy">Privacy Policy</a> | <a href="/terms-of-service">Terms of Service</a></p>
+</footer>
 
 </html>
