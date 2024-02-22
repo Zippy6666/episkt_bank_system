@@ -1,112 +1,20 @@
-/* body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #f4f4f4;
+/*
+================================================================================================
+        General
+================================================================================================
+*/
+
+body {
+    font-family: 'Arial', sans-serif;
     margin: 10;
     padding: 0;
-    box-sizing: border-box;
 }
-
-
-header {
-    background-color: #333;
-    color: white;
-    text-align: center;
-    padding: 1em;
-    font-size: large;
-} */
-
-/* 
-.dropdown-content {
-    display: none;
-    position: absolute;
-    background-color: #f9f9f9;
-    min-width: 100%;
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-    z-index: 1;
-}
-
-
-
-
-
-h1 {
-    text-align: center;
-    font-size: large;
-}
-
-
-main {
-    max-width: 800px;
-    margin: 20px auto;
-    padding: 20px;
-    background-color: #fff;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-
-
-footer {
-    background-color: #333;
-    color: white;
-    text-align: center;
-    padding: 1em;
-    position: fixed;
-    bottom: 0;
-    width: 100%;
-}
-
-
-a {
-    color: cadetblue;
-}
-
 
 p {
-    padding: 10px;
-    padding-top: 2px;
+    font-size: 16px;
+    line-height: 1.6;
+    margin-bottom: 15px;
 }
-
-
-img {
-    max-width: 100%;
-}
-
-
-form {
-    width: 100%;
-    max-width: 400px;
-    margin: 20px auto;
-}
-
-label {
-    display: block;
-    margin-bottom: 8px;
-    color: #333;
-}
-
-input {
-    width: 100%;
-    padding: 10px;
-    box-sizing: border-box;
-    margin-bottom: 20px;
-}
-
-button {
-    width: 100%;
-    padding: 12px;
-    box-sizing: border-box;
-    background-color: #ffb93f;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-.errortext {
-    color: red;
-    font-size: smaller;
-    padding: 10px;
-}
-
 
 .stat-block {
     width: 30%;
@@ -118,11 +26,106 @@ button {
     padding: 15px;
 }
 
-.stat-block h2 {
-    color: #333;
+
+/*
+================================================================================================
+        Header/Footer
+================================================================================================
+*/
+header {
+    background-color: #004080;
+    color: white;
+    padding: 10px;
+    text-align: center;
 }
 
-.stat-block p {
-    color: #666;
-    font-weight: bold;
-} */
+footer {
+    background-color: #004080;
+    color: white;
+    padding: 10px;
+    text-align: center;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}
+
+
+.footer-links {
+    margin-top: 10px;
+}
+
+.footer-links a {
+color: #fff;
+margin: 0 10px;
+text-decoration: none;
+}
+
+
+
+/*
+================================================================================================
+        Menu Buttons
+================================================================================================
+*/
+
+
+.header-buttons {
+    display: flex;
+  }
+
+.header-buttons button {
+background-color: #004080;
+color: white;
+border: none;
+border-radius: 5px;
+padding: 10px;
+margin-left: 10px;
+cursor: pointer;
+transition: background-color 0.3s ease;
+}
+
+.header-buttons button:hover {
+background-color: #00254c;
+}
+
+
+/*
+================================================================================================
+        Searchbar
+================================================================================================
+*/
+
+/* Basic styling for the search bar container */
+.search-container {
+    position: relative;
+    margin: 10px;
+  }
+  
+  /* Styling for the input field */
+  .search-input {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    width: 200px;
+  }
+  
+  /* Styling for the search button */
+  .search-button {
+    padding: 8px;
+    background-color: #4CAF50;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  /* Position the search button within the container */
+  .search-button {
+    position: absolute;
+    right: 0;
+  }
+  
+  /* Optional: Add some hover effect for the button */
+  .search-button:hover {
+    background-color: #45a049;
+  }
