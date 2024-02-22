@@ -12,8 +12,3 @@ function kundsearchButtonClick() {
     let url = "/kundsokning";
     window.location.href = url;
 }
-
-function handleTransactionsButtonClick() {
-    let url = "/kontobild";
-    window.location.href = url;
-}

@@ -14,13 +14,25 @@
             <button class="sidebutton" onclick="homeButtonClick()">Hem</button>
             <button class="sidebutton" onclick="kundbildButtonClick()">Kundbild</button>
             <button class="sidebutton" onclick="kundsearchButtonClick()">Kundsökning</button>
-            <button class="sidebutton" onclick="handleTransactionsButtonClick()">Hantera Transaktioner</button>
         </div>
 
+        <section class="stat-block">
+            <h2>Kontoinfo</h2>
+            <p>Kontonummer: {{info_kontonummer}}</p>
+            <p>Saldo: {{info_saldo}} SEK</p>
+        </section>
+
+        <section class="stat-block">
+            <h1>Transaktioner</h1>
+            <ul>
+                {% for transaction in info_transactions %}
+                    <li>transaction.belopp</li>
+                {% endfor %}
+            </ul>
+        </section>
 
         <!--Javascript-->
         <script src="../static/js/bank.js"> </script>
-
 
     </body>
 

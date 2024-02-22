@@ -42,6 +42,11 @@ def get_customer(id: int) -> Customer:
     return Customer.query.filter(Customer.id == id).first()
 
 
+def get_account(id: int) -> Account:
+    """Aquire account from database by ID."""
+    return Account.query.filter(Account.id == id).first()
+
+
 @login_manager.user_loader
 def load_user(user_id: int) -> SuperUser:
     """Login manager load user"""
@@ -244,8 +249,15 @@ def kundsokning() -> str:
 @login_required
 def kontobild() -> str:
     konto_id = request.args.get("id")
-    print("TEST", konto_id)
-    return render_template("kontobild.html")
+    account = get_account(konto_id)
+
+    data = dict(
+        info_kontonummer = account.kontonummer,
+        info_saldo = f"{account.saldo:,}",
+        info_transactions = account.transactions
+    )
+
+    return render_template("kontobild.html", **data)
 
 
 # =====================================================================
@@ -268,10 +280,6 @@ def privacy_policy() -> str:
 # =====================================================================
 
 
-def open_browser():
-    webbrowser.open("http://127.0.0.1:5000/")
-
-
 def main() -> None:
     # flask db migrate -m "Your migration message"
     # flask db upgrade
@@ -281,7 +289,7 @@ def main() -> None:
 
     # Open the browser only when running in the main thread
     if threading.current_thread() == threading.main_thread():
-        threading.Timer(1, open_browser).start()
+        webbrowser.open("http://127.0.0.1:5000/")
 
     app.run("127.0.0.1", port=5000, debug=True)
 
