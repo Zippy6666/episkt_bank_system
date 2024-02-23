@@ -62,20 +62,6 @@ def seed_data():
                     customer=customer, saldo=saldo, kontonummer=kontonummer
                 )
 
-                # # Transaction for account
-                # for _ in range(random.randrange(0, 500)):
-                #     belopp = fake.random_number(digits=3)
-                #     type_ = random.choice(("INSÄTT","UTTAG"))
-                #     timestamp = fake.date_between(start_date='-365d', end_date='today')
-                #     transaction = Transaction(
-                #         account=account,
-                #         belopp=belopp,
-                #         type=type_,
-                #         timestamp=timestamp,
-                #     )
-
-                #     db.session.add(transaction)
-
                 db.session.add(account)
 
             db.session.add(customer)
