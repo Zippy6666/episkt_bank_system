@@ -18,7 +18,7 @@ db = SQLAlchemy()
 # Bank customer, can be managed by the big dawgs
 class Customer(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    personnummer = db.Column(db.String(10), nullable=False, unique=True)
+    personnummer = db.Column(db.String(13), nullable=False, unique=True)
     name = db.Column(db.String(80), nullable=False)
     city = db.Column(db.String(80), nullable=False)
     adress = db.Column(db.String(80), nullable=False)
@@ -29,7 +29,7 @@ class Customer(db.Model):
 class Account(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     saldo = db.Column(db.Float, nullable=False)
-    kontonummer = db.Column(db.String(12), nullable=False, unique=True)
+    kontonummer = db.Column(db.String(20), nullable=False, unique=True)
     customer_id = db.Column(db.Integer, db.ForeignKey("customer.id"), nullable=False)
     transactions = db.relationship("Transaction", backref="transaction", lazy=True)
 

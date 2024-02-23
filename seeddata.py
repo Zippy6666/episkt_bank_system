@@ -10,7 +10,20 @@ import random
 # =====================================================================
 
 
-def create_user(email, password, rolename):
+def till_personnummer( num:int ) -> str:
+    num = str(num)
+    personnummer = f"{num[0:8]}-{num[8:12]}"
+    # print(personnummer)
+    return personnummer
+
+def till_kontonummer( num:int ) -> str:
+    num = str(num)
+    kontonummer = f"{num[0:4]} {num[4:8]} {num[8:12]} {num[12:16]}"
+    # print(kontonummer)
+    return kontonummer
+
+
+def create_user(email:str, password:str, rolename:str) -> None:
     pass_encoded = password.encode()
     passhash = sha256(pass_encoded).hexdigest()
     user = SuperUser(email=email, password=passhash, rolename=rolename)
@@ -31,7 +44,7 @@ def seed_data():
         for _ in range(1, 301):
             # Customer
             city = fake.city()
-            personnummer = str(fake.random_number(digits=10, fix_len=True))
+            personnummer = till_personnummer(fake.random_number(digits=12, fix_len=True))
             name = fake.name()
             adress = fake.street_address()
             customer = Customer(
@@ -41,7 +54,7 @@ def seed_data():
             # Account for customer
             for _ in range(random.randint(0, 3)):
                 saldo = fake.random_number(digits=6)
-                kontonummer = str(fake.random_number(digits=12, fix_len=True))
+                kontonummer = till_kontonummer(fake.random_number(digits=16, fix_len=True))
                 account = Account(
                     customer=customer, saldo=saldo, kontonummer=kontonummer
                 )
