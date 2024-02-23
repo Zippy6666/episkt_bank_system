@@ -40,7 +40,7 @@ def seed_data():
         db.session.query(SuperUser).delete()
         db.session.commit()
 
-        for _ in range(1, 301):
+        for _ in range(1, 1001):
             # Customer
             city = fake.city()
             personnummer = till_personnummer(
