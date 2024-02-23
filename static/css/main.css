@@ -64,7 +64,7 @@ text-decoration: none;
 
 /*
 ================================================================================================
-        Buttons
+        Menu Buttons
 ================================================================================================
 */
 
@@ -88,6 +88,28 @@ transition: background-color 0.3s ease;
 background-color: #00254c;
 }
 
+
+/*
+================================================================================================
+        Account Transaction Handle Stuff
+================================================================================================
+*/
+
+
+.account-handle-container {
+  position: relative;
+  margin: 10px;
+}
+
+
+.account-handle-input {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  width: 200px;
+}
+
+
 .account-handle-button {
   padding: 8px;
   background-color: #4CAF50;
@@ -98,19 +120,37 @@ background-color: #00254c;
 }
 
 
+/* .account-handle-button {
+  position: absolute;
+  bottom: 0;
+} */
+
+
+.account-handle-button:hover {
+  background-color: #45a049;
+}
+
+.transaction {
+  margin-bottom: 10px;
+  padding: 5px;
+  border: 1px solid #ccc;
+  background-color: #f9f9f9;
+  font-family: Arial, sans-serif;
+}
+
 /*
 ================================================================================================
         Searchbar
 ================================================================================================
 */
 
-/* Basic styling for the search bar container */
+
 .search-container {
     position: relative;
     margin: 10px;
   }
   
-  /* Styling for the input field */
+
   .search-input {
     padding: 8px;
     border: 1px solid #ccc;
@@ -118,7 +158,7 @@ background-color: #00254c;
     width: 200px;
   }
   
-  /* Styling for the search button */
+
   .search-button {
     padding: 8px;
     background-color: #4CAF50;
@@ -128,13 +168,13 @@ background-color: #00254c;
     cursor: pointer;
   }
   
-  /* Position the search button within the container */
+
   .search-button {
     position: absolute;
     right: 0;
   }
   
-  /* Optional: Add some hover effect for the button */
+
   .search-button:hover {
     background-color: #45a049;
   }

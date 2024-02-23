@@ -28,7 +28,7 @@ class Customer(db.Model):
 # Bank account for a customer
 class Account(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    saldo = db.Column(db.Float, nullable=False)
+    saldo = db.Column(db.Numeric(10, 2), nullable=False)
     kontonummer = db.Column(db.String(20), nullable=False, unique=True)
     customer_id = db.Column(db.Integer, db.ForeignKey("customer.id"), nullable=False)
     transactions = db.relationship("Transaction", backref="transaction", lazy=True)

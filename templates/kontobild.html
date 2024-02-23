@@ -19,24 +19,32 @@
         </header>
 
         <section class="stat-block">
+            <h1>Transaktioner</h1>
+
+            
+            {% for transaction in info_transactions %}
+            <div class="transaction">{{ transaction.timestamp.strftime('%Y-%m-%d %H:%M:%S') }} - {{transaction.type}} {{transaction.belopp}} SEK</div>
+            {% endfor %}
+
+
+            <form class="account-handle-container" action="/kontobild?id={{konto_id}}" method="post">
+                <label for="belopp">Ny transaktion:</label>
+                <input type="text" id="belopp" class="account-handle-input"name="belopp" placeholder="Belopp">
+                <button type="submit" class="account-handle-button" name="transaction_type" value="insätt">Sätt in</button>
+                <button type="submit" class="account-handle-button" name="transaction_type" value="uttag">Ta ut</button>
+                <!-- <button type="submit" class="account-handle-button" name="transaction_type" value="överför">Överför</button> -->
+                <p>{{transaction_emsg}}</p>
+            </form>
+
+
+        </section>
+
+        <section class="stat-block">
             <h2>Kontoinfo</h2>
             <p>Kontonummer: {{info_kontonummer}}</p>
             <p>Saldo: {{info_saldo}} SEK</p>
         </section>
 
-        <section class="stat-block">
-            <h1>Transaktioner</h1>
-            
-            <ul>
-                {% for transaction in info_transactions %}
-                    <li>transaction.belopp</li>
-                {% endfor %}
-            </ul>
-
-            <button class="account-handle-button">Sätt in</button>
-            <button class="account-handle-button">Ta ut</button>
-            <button class="account-handle-button">Överför</button>
-        </section>
 
         <!--Javascript-->
         <script src="../static/js/bank.js"> </script>

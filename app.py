@@ -7,9 +7,12 @@ import webbrowser, os, threading
 from flask import Flask, render_template, request, redirect, url_for
 from flask_migrate import Migrate, upgrade
 from flask_login import login_required, LoginManager, login_user
-from models import db, Customer, Account, SuperUser
+from models import db, Customer, Account, SuperUser, Transaction
 from hashlib import sha256
 from sqlalchemy import or_
+from typing import Optional, Union
+from decimal import Decimal
+from datetime import datetime
 
 
 # =====================================================================
@@ -89,6 +92,39 @@ def customer_search(
         query = query.order_by(column.asc())
 
     return query.paginate(page=page, per_page=50), query.count()
+
+
+def transaction(amt: float, from_: int, to_: Optional[int] = None) -> str:
+    """Do a transaction for an account"""
+    account_from = get_account(from_)
+    b_uttag = amt < 0
+
+    if not account_from:
+        return "Transaction failed: Unknown error."
+
+    if b_uttag and -amt > account_from.saldo:
+        return "Transaction failed: Account does not have enough funds to complete the transaction!"
+
+    try:
+        # Saldo change
+        account_from.saldo += amt
+
+        # Register "from" transaction
+        transaction_ = Transaction(
+            account_id=from_,
+            timestamp=datetime.now(),
+            type=b_uttag and "UTTAG" or "INSÄTT",
+            belopp=amt,
+        )
+        db.session.add(transaction_)
+
+        db.session.commit()
+    except Exception as e:
+        print(f"Error during transaction: {e}")
+        db.session.rollback()  # Rollback the transaction in case of an error
+        return "Transaction failed: Unknown error."
+
+    return f"Transaction success: Successfully completed the transaction!"
 
 
 # =====================================================================
@@ -191,10 +227,6 @@ def kundbild() -> str:
                 or "Kunden har inga konton"
             )
 
-    # visa all info om kunden
-    # visa alla konton för kunden
-    # ex: konto 2: 6666 6666 6666 6666
-
     return render_template("kundbild.html", **data)
 
 
@@ -225,7 +257,9 @@ def kundsokning() -> str:
         ) or request.args.get("searchword")
         data["searchbarval"] = search_str
 
-        results, results_count = customer_search(search_str, sort_by or "id", sort_direction, page or 1)
+        results, results_count = customer_search(
+            search_str, sort_by or "id", sort_direction, page or 1
+        )
 
         if sort_direction == "asc":
             data["new_direction"] = "desc"
@@ -249,12 +283,26 @@ def kundsokning() -> str:
 @login_required
 def kontobild() -> str:
     konto_id = request.args.get("id")
+
+    # New transaction
+    transaction_msg = None
+    if request.method == "POST":
+        belopp = float(request.form.get("belopp"))
+        transaction_type = request.form.get("transaction_type")
+
+        if transaction_type == "uttag" or transaction_type == "överför":
+            belopp = -belopp
+
+        transaction_msg = transaction(belopp, konto_id)
+
     account = get_account(konto_id)
 
     data = dict(
-        info_kontonummer = account.kontonummer,
-        info_saldo = f"{account.saldo:,}",
-        info_transactions = account.transactions
+        konto_id=konto_id,
+        info_kontonummer=account.kontonummer,
+        info_saldo=f"{account.saldo:,}",
+        info_transactions=account.transactions,
+        transaction_msg=transaction_msg or "",
     )
 
     return render_template("kontobild.html", **data)
@@ -287,7 +335,6 @@ def main() -> None:
     with app.app_context():
         upgrade()
 
-    # Open the browser only when running in the main thread
     if threading.current_thread() == threading.main_thread():
         webbrowser.open("http://127.0.0.1:5000/")
 
