@@ -2,6 +2,7 @@
 
 - [ ] Bild bäckground vore najs
 - [ ] Decimal accuracy
+- [ ] Fråga när den ska vara klar, hur exakt den ska lämnas in
 
 - [ ] G - Administrationssystem för en bank.
     - [x] Inloggning ska vara implementerat
