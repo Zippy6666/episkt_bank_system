@@ -21,9 +21,15 @@
         {%if allow_input%}
             <h1>Ta fram en kundbild genom kund ID här</h1>
 
-            <form action="/kundbild" method="post">
+            <!-- <form action="/kundbild" method="post">
                 <label for="kundid">Kund ID:</label>
                 <input type="text" id="kundid" name="kundid" value="{{input_kundid}}">
+            </form> -->
+    
+            <form class="search-container" action="/kundbild" method="post">
+                <label for="kundid">Kund ID:</label>
+                <input type="text" id="kundid" class="search-input"name="kundid" placeholder="KundID" value={{input_kundid}}>
+                <button class="search-button" type="submit" id="search-button">Search</button>
             </form>
         {%endif%}
         

@@ -26,11 +26,16 @@
 
         <section class="stat-block">
             <h1>Transaktioner</h1>
+            
             <ul>
                 {% for transaction in info_transactions %}
                     <li>transaction.belopp</li>
                 {% endfor %}
             </ul>
+
+            <button class="account-handle-button">Sätt in</button>
+            <button class="account-handle-button">Ta ut</button>
+            <button class="account-handle-button">Överför</button>
         </section>
 
         <!--Javascript-->

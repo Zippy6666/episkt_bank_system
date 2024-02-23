@@ -13,13 +13,11 @@ import random
 def till_personnummer( num:int ) -> str:
     num = str(num)
     personnummer = f"{num[0:8]}-{num[8:12]}"
-    # print(personnummer)
     return personnummer
 
 def till_kontonummer( num:int ) -> str:
     num = str(num)
     kontonummer = f"{num[0:4]} {num[4:8]} {num[8:12]} {num[12:16]}"
-    # print(kontonummer)
     return kontonummer
 
 

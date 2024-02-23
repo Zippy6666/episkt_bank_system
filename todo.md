@@ -1,9 +1,8 @@
 # TODO
 
 
-- [ ] FIXA KONTONUMRERNA
-- [ ] BAJS äta naglar
 - [ ] Bild bäckground vore najs
+- [ ] CSS kommentarer
 
 - [ ] G - Administrationssystem för en bank.
     - [x] Inloggning ska vara implementerat
@@ -26,7 +25,7 @@
         - [x] Sökresultatet ska vara paginerat (50 resultat i taget och så ska man kunna bläddra till nästa/tidigare sida).
         - [x] Klickar man på en kund ska man komma till kundbilden.
     - [x] Make it look najs
-    - [ ] Lägg till en kontobild där man kan se transaktioner för ett individuellt konto.
+    - [x] Lägg till en kontobild där man kan se transaktioner för ett individuellt konto.
         - [ ] Systemet ska också hantera insättningar, uttag och överföringar mellan konton.
         - [ ] Det ska inte gå att ändra saldo direkt på ett konto - alltid via en transaktion.
         - [ ] Det ska framgå tydligt om någon försöker ta ut eller överföra mer pengar än vad som finns på kontot.

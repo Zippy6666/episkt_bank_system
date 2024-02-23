@@ -64,7 +64,7 @@ text-decoration: none;
 
 /*
 ================================================================================================
-        Menu Buttons
+        Buttons
 ================================================================================================
 */
 
@@ -86,6 +86,15 @@ transition: background-color 0.3s ease;
 
 .header-buttons button:hover {
 background-color: #00254c;
+}
+
+.account-handle-button {
+  padding: 8px;
+  background-color: #4CAF50;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
 }
 
 
