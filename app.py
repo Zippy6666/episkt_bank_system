@@ -10,8 +10,7 @@ from flask_login import login_required, LoginManager, login_user
 from models import db, Customer, Account, SuperUser, Transaction
 from hashlib import sha256
 from sqlalchemy import or_
-from typing import Optional, Union
-from decimal import Decimal
+from typing import Optional
 from datetime import datetime
 
 

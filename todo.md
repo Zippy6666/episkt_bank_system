@@ -1,7 +1,6 @@
 # TODO
 
 - [ ] Bild bäckground vore najs
-- [ ] CSS kommentarer
 - [ ] Decimal accuracy
 
 - [ ] G - Administrationssystem för en bank.
