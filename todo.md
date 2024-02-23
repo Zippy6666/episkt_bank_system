@@ -6,7 +6,7 @@
 - [ ] G - Administrationssystem för en bank.
     - [x] Inloggning ska vara implementerat
         Du ska lägga in roller via seed, Rollen Cashier ska kunna administrera kunder och deras konton.
-    - [x] Använd den databas som seedas vid uppstart, SQLAlchemy etc.
+    - [ ] Använd den databas som seedas vid UPPSTART, SQLAlchemy etc.
     - [x] Bygg ett webbgränssnitt.
     - [x] Startsida: skriv ut statistik på startsidan. Man ska se antal kunder, antal konton och summan av saldot på konton.
     - [x] Det får inte bli några avrundningsfel så använd decimal.
