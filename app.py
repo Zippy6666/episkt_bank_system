@@ -201,30 +201,33 @@ def kundbild() -> str:
 
     if request.method == "POST" or force_id:
         id = force_id or request.form["kundid"]
-        customer = get_customer(id)
 
-        data["input_kundid"] = id
+        # Input validation
+        if isinstance(id, str) and id.isnumeric():
+            customer = get_customer(id)
 
-        if customer is None:
-            data["info_kundid"] = "Kund #" + id + " finns ej registrerad."
-        else:
-            data["info_kundid"] = "Kund #" + id + ": " + customer.name
-            data["info_personnummer"] = "Personnummer: " + customer.personnummer
-            data["info_city"] = "Stad: " + customer.city
-            data["info_accounts"] = customer.accounts
+            data["input_kundid"] = id
 
-            if len(customer.accounts) > 0:
-                totsaldo = sum(
-                    a.saldo for a in Account.query.all() if a.customer_id == int(id)
+            if customer is None:
+                data["info_kundid"] = "Kund #" + id + " finns ej registrerad."
+            else:
+                data["info_kundid"] = "Kund #" + id + ": " + customer.name
+                data["info_personnummer"] = "Personnummer: " + customer.personnummer
+                data["info_city"] = "Stad: " + customer.city
+                data["info_accounts"] = customer.accounts
+
+                if len(customer.accounts) > 0:
+                    totsaldo = sum(
+                        a.saldo for a in Account.query.all() if a.customer_id == int(id)
+                    )
+                    totsaldo = f"{totsaldo:,}"
+                    data["info_totsaldo"] = f"Totalt saldo: {totsaldo} SEK"
+
+                data["account_fetch_status"] = (
+                    len(customer.accounts) > 0
+                    and ("Konton hittade för kund #" + id)
+                    or "Kunden har inga konton"
                 )
-                totsaldo = f"{totsaldo:,}"
-                data["info_totsaldo"] = f"Totalt saldo: {totsaldo} SEK"
-
-            data["account_fetch_status"] = (
-                len(customer.accounts) > 0
-                and ("Konton hittade för kund #" + id)
-                or "Kunden har inga konton"
-            )
 
     return render_template("kundbild.html", **data)
 
@@ -282,31 +285,48 @@ def kundsokning() -> str:
 @login_required
 def kontobild() -> str:
     konto_id = request.args.get("id")
+    account = get_account(konto_id)
+
 
     # New transaction
     transaction_msg = None
     if request.method == "POST":
-        belopp = float(request.form.get("belopp"))
-        transaction_type = request.form.get("transaction_type")
-        transfer_accountnr = request.form.get("transfer_accountnr")
-
-        if transaction_type == "uttag" or transaction_type == "överför":
-            belopp = -belopp
-
-        transaction_msg, success = transaction(belopp, get_account(konto_id), transaction_type == "överför")
-
-        if success and transaction_type == "överför":
-            transaction_msg, success = transaction(-belopp, get_account_by_nr(transfer_accountnr), True)
-            transaction_msg = "(RECEIVING END) "+transaction_msg
-        
-        if success:
-            db.session.commit()
+        try:
+            belopp = float(request.form.get("belopp"))
+        except Exception as e:
+            print(f"Error during input: {e}")
+            transaction_msg = "Transaction error: Invalid input."
         else:
-            db.session.rollback()
+            if belopp > 0:
+                transaction_type = request.form.get("transaction_type")
+                transfer_accountnr = request.form.get("transfer_accountnr")
+
+                if transaction_type == "uttag" or transaction_type == "överför":
+                    belopp = -belopp
+
+                transaction_msg, success = transaction(belopp, get_account(konto_id), transaction_type == "överför")
+
+                # Transfer
+                if success and transaction_type == "överför":
+                    receiving_account = get_account_by_nr(transfer_accountnr)
+
+                    if account != receiving_account:
+                        transfer_to_msg, success = transaction(-belopp, receiving_account, True)
+                        transaction_msg = success and transaction_msg or "(RECEIVING END) "+transfer_to_msg
+                    else:
+                        transaction_msg = "Transaction error: Forbidden transfer!"
+                        success = False
 
 
+                # Commit or rollback
+                if success:
+                    db.session.commit()
+                else:
+                    db.session.rollback()
+            else:
+                transaction_msg = "Transaction error: Input must be more than 0!"
 
-    account = get_account(konto_id)
+
 
     data = dict(
         konto_id=konto_id,
@@ -315,8 +335,6 @@ def kontobild() -> str:
         info_transactions=account.transactions,
         transaction_msg=transaction_msg or "",
     )
-
-    # Note: Transfers needs to be more safe!! Before commiting to database, it must be made sure both transactions suceeded.
 
     return render_template("kontobild.html", **data)
 

@@ -102,7 +102,7 @@ background-color: #00254c;
 }
 
 
-.account-handle-component {
+.account-handle-buttons {
   position: relative;
   margin: 10px;
 }
@@ -113,6 +113,7 @@ background-color: #00254c;
   border: 1px solid #ccc;
   border-radius: 4px;
   width: 200px;
+  margin: 5px;
 }
 
 
