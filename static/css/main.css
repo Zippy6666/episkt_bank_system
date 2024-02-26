@@ -102,6 +102,12 @@ background-color: #00254c;
 }
 
 
+.account-handle-component {
+  position: relative;
+  margin: 10px;
+}
+
+
 .account-handle-input {
   padding: 8px;
   border: 1px solid #ccc;

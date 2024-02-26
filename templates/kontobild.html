@@ -23,19 +23,26 @@
 
             
             {% for transaction in info_transactions %}
-            <div class="transaction">{{ transaction.timestamp.strftime('%Y-%m-%d %H:%M:%S') }} - {{transaction.type}} {{transaction.belopp}} SEK</div>
+                <div class="transaction">
+                    {{ transaction.timestamp.strftime('%Y-%m-%d %H:%M:%S') }} - {{ transaction.type }} {{ "{:,}".format(transaction.belopp) }} SEK
+                </div>
             {% endfor %}
 
 
             <form class="account-handle-container" action="/kontobild?id={{konto_id}}" method="post">
                 <label for="belopp">Ny transaktion:</label>
                 <input type="text" id="belopp" class="account-handle-input"name="belopp" placeholder="Belopp">
+
                 <button type="submit" class="account-handle-button" name="transaction_type" value="insätt">Sätt in</button>
                 <button type="submit" class="account-handle-button" name="transaction_type" value="uttag">Ta ut</button>
-                <!-- <button type="submit" class="account-handle-button" name="transaction_type" value="överför">Överför</button> -->
+
+                <label for="transfer_accountnr">Överföring:</label>
+                <input type="text" id="transfer_accountnr" class="account-handle-input"name="transfer_accountnr" placeholder="Kontonummer">
+
+                <button type="submit" class="account-handle-button" name="transaction_type" value="överför">Överför</button>
+
                 <p>{{transaction_msg}}</p>
             </form>
-
 
         </section>
 

@@ -10,7 +10,6 @@ from flask_login import login_required, LoginManager, login_user
 from models import db, Customer, Account, SuperUser, Transaction
 from hashlib import sha256
 from sqlalchemy import or_
-from typing import Optional
 from datetime import datetime
 
 
@@ -47,6 +46,11 @@ def get_customer(id: int) -> Customer:
 def get_account(id: int) -> Account:
     """Aquire account from database by ID."""
     return Account.query.filter(Account.id == id).first()
+
+
+def get_account_by_nr(nr: str) -> Account:
+    """Aquire account from database by account number."""
+    return Account.query.filter(Account.kontonummer == nr).first()
 
 
 @login_manager.user_loader
@@ -93,37 +97,33 @@ def customer_search(
     return query.paginate(page=page, per_page=50), query.count()
 
 
-def transaction(amt: float, from_: int, to_: Optional[int] = None) -> str:
+def transaction(amt: float, account: Account, is_transfer: bool=False) -> tuple[str, bool]:
     """Do a transaction for an account"""
-    account_from = get_account(from_)
     b_uttag = amt < 0
 
-    if not account_from:
-        return "Transaction failed: Unknown error."
+    if not account:
+        return "Transaction failed: Account not found.", False
 
-    if b_uttag and -amt > account_from.saldo:
-        return "Transaction failed: Account does not have enough funds to complete the transaction!"
+    if b_uttag and -amt > account.saldo:
+        return "Transaction failed: Account does not have enough funds to complete the transaction!", False
 
     try:
         # Saldo change
-        account_from.saldo += amt
+        account.saldo += amt
 
         # Register "from" transaction
         transaction_ = Transaction(
-            account_id=from_,
+            account_id=account.id,
             timestamp=datetime.now(),
-            type=b_uttag and "UTTAG" or "INSÄTT",
+            type=(is_transfer and "ÖVER") or (b_uttag and "UTTAG") or "INSÄTT",
             belopp=amt,
         )
         db.session.add(transaction_)
-
-        db.session.commit()
     except Exception as e:
         print(f"Error during transaction: {e}")
-        db.session.rollback()  # Rollback the transaction in case of an error
-        return "Transaction failed: Unknown error."
+        return "Transaction failed: Unknown error.", False
 
-    return f"Transaction success: Successfully completed the transaction!"
+    return f"Transaction success: Successfully completed the transaction!", True
 
 
 # =====================================================================
@@ -288,11 +288,23 @@ def kontobild() -> str:
     if request.method == "POST":
         belopp = float(request.form.get("belopp"))
         transaction_type = request.form.get("transaction_type")
+        transfer_accountnr = request.form.get("transfer_accountnr")
 
         if transaction_type == "uttag" or transaction_type == "överför":
             belopp = -belopp
 
-        transaction_msg = transaction(belopp, konto_id)
+        transaction_msg, success = transaction(belopp, get_account(konto_id), transaction_type == "överför")
+
+        if success and transaction_type == "överför":
+            transaction_msg, success = transaction(-belopp, get_account_by_nr(transfer_accountnr), True)
+            transaction_msg = "(RECEIVING END) "+transaction_msg
+        
+        if success:
+            db.session.commit()
+        else:
+            db.session.rollback()
+
+
 
     account = get_account(konto_id)
 
@@ -303,6 +315,8 @@ def kontobild() -> str:
         info_transactions=account.transactions,
         transaction_msg=transaction_msg or "",
     )
+
+    # Note: Transfers needs to be more safe!! Before commiting to database, it must be made sure both transactions suceeded.
 
     return render_template("kontobild.html", **data)
 
