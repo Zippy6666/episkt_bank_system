@@ -303,6 +303,7 @@ def kundsokning() -> str:
 @app.route("/kontobild", methods=["GET", "POST"])
 @login_required
 def kontobild() -> str:
+    print(request, request.args)
     konto_id = request.args.get("id")
     account = get_account(konto_id)
 

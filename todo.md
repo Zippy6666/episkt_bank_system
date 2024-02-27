@@ -1,16 +1,14 @@
 # TODO
 
 - [ ] Bild bäckground vore najs
-- [ ] Decimal accuracy
-- [ ] Fråga hur exakt den ska lämnas in
+- [ ] Flytta transaktionslistan
+
 
 - [ ] G - Administrationssystem för en bank.
     - [x] Inloggning ska vara implementerat
         Du ska lägga in roller via seed, Rollen Cashier ska kunna administrera kunder och deras konton.
-    - [ ] Använd den databas som seedas vid UPPSTART, SQLAlchemy etc.
     - [x] Bygg ett webbgränssnitt.
     - [x] Startsida: skriv ut statistik på startsidan. Man ska se antal kunder, antal konton och summan av saldot på konton.
-    - [x] Det får inte bli några avrundningsfel så använd decimal.
     - [x] Bygg en Flask lösning för en bank som kan hantera kunder, deras konton med saldo samt transaktioner.
     - [x] Seeda två användare:
         - [x] stefan.holmberg@systementor.se och Hejsan123# och som Admin
@@ -33,3 +31,6 @@
     - [ ] Det ska finnas Unit Tester där du skriver tester som testar att det:
         - [ ] inte går att ta ut eller överföra mer pengar än det finns på kontot.
         - [ ] gå att sätta in eller ta ut negativa belopp.
+    - [ ] Fixa footern
+    - [ ] Använd den databas som seedas vid UPPSTART, SQLAlchemy etc.
+    - [ ] Det får inte bli några avrundningsfel så använd decimal.
