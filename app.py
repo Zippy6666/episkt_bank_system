@@ -11,6 +11,7 @@ from models import db, Customer, Account, SuperUser, Transaction
 from hashlib import sha256
 from sqlalchemy import or_
 from datetime import datetime
+from enum import Enum
 
 
 # =====================================================================
@@ -31,6 +32,19 @@ db.app = app
 db.init_app(app)
 
 migrate = Migrate(app, db)
+
+# =====================================================================
+# Enums
+# =====================================================================
+
+
+class TransactionResultMessage(Enum):
+    NOT_FOUND = "Transaction failed: Account not found"
+    INSUFFICIENT_FUNDS = "Transaction failed: Account does not have enough funds to complete the transaction!"
+    UNKNOWN = "Transaction failed: Unknown error."
+    SUCCESS = "Transaction success: Successfully completed the transaction!"
+    FORBIDDEN = "Transaction error: Forbidden transfer!"
+    LESS_THAN_ZERO = "Transaction error: Input must be more than 0!"
 
 
 # =====================================================================
@@ -97,15 +111,20 @@ def customer_search(
     return query.paginate(page=page, per_page=50), query.count()
 
 
-def transaction(amt: float, account: Account, is_transfer: bool=False) -> tuple[str, bool]:
+def transaction(
+    amt: float, account: Account, is_transfer: bool = False
+) -> tuple[str, bool]:
     """Do a transaction for an account"""
     b_uttag = amt < 0
 
     if not account:
-        return "Transaction failed: Account not found.", False
+        return TransactionResultMessage.NOT_FOUND.value, False
 
     if b_uttag and -amt > account.saldo:
-        return "Transaction failed: Account does not have enough funds to complete the transaction!", False
+        return (
+            TransactionResultMessage.INSUFFICIENT_FUNDS.value,
+            False,
+        )
 
     try:
         # Saldo change
@@ -121,9 +140,9 @@ def transaction(amt: float, account: Account, is_transfer: bool=False) -> tuple[
         db.session.add(transaction_)
     except Exception as e:
         print(f"Error during transaction: {e}")
-        return "Transaction failed: Unknown error.", False
+        return TransactionResultMessage.UNKNOWN.value, False
 
-    return f"Transaction success: Successfully completed the transaction!", True
+    return TransactionResultMessage.SUCCESS.value, True
 
 
 # =====================================================================
@@ -287,7 +306,6 @@ def kontobild() -> str:
     konto_id = request.args.get("id")
     account = get_account(konto_id)
 
-
     # New transaction
     transaction_msg = None
     if request.method == "POST":
@@ -304,19 +322,26 @@ def kontobild() -> str:
                 if transaction_type == "uttag" or transaction_type == "överför":
                     belopp = -belopp
 
-                transaction_msg, success = transaction(belopp, get_account(konto_id), transaction_type == "överför")
+                transaction_msg, success = transaction(
+                    belopp, account, transaction_type == "överför"
+                )
 
                 # Transfer
                 if success and transaction_type == "överför":
                     receiving_account = get_account_by_nr(transfer_accountnr)
 
                     if account != receiving_account:
-                        transfer_to_msg, success = transaction(-belopp, receiving_account, True)
-                        transaction_msg = success and transaction_msg or "(RECEIVING END) "+transfer_to_msg
+                        transfer_to_msg, success = transaction(
+                            -belopp, receiving_account, True
+                        )
+                        transaction_msg = (
+                            success
+                            and transaction_msg
+                            or "(RECEIVING END) " + transfer_to_msg
+                        )
                     else:
-                        transaction_msg = "Transaction error: Forbidden transfer!"
+                        transaction_msg = TransactionResultMessage.FORBIDDEN.value
                         success = False
-
 
                 # Commit or rollback
                 if success:
@@ -324,9 +349,7 @@ def kontobild() -> str:
                 else:
                     db.session.rollback()
             else:
-                transaction_msg = "Transaction error: Input must be more than 0!"
-
-
+                transaction_msg = TransactionResultMessage.LESS_THAN_ZERO.value
 
     data = dict(
         konto_id=konto_id,
