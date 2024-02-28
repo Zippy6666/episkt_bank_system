@@ -288,22 +288,23 @@ def kundsokning() -> str:
     if request.method == "POST" or sort_by or page:
         search_str = (
             "search-bar" in request.form and request.form["search-bar"]
-        ) or request.args.get("searchword")
+        ) or request.args.get("searchword") or ""
         data["searchbarval"] = search_str
 
-        results, results_count = customer_search(
-            search_str, sort_by or "id", sort_direction, page or 1
-        )
+        if len(search_str) > 0:
+            results, results_count = customer_search(
+                search_str, sort_by or "id", sort_direction, page or 1
+            )
 
-        if sort_direction == "asc":
-            data["new_direction"] = "desc"
-        else:
-            data["new_direction"] = "asc"
+            if sort_direction == "asc":
+                data["new_direction"] = "desc"
+            else:
+                data["new_direction"] = "asc"
 
-        data["search_h1"] = str(results_count) + " sökresultat för '" + search_str + "'"
-        data["results"] = results
-        data["results_count"] = results_count
-        data["page"] = page or 1
+            data["search_h1"] = str(results_count) + " sökresultat för '" + search_str + "'"
+            data["results"] = results
+            data["results_count"] = results_count
+            data["page"] = page or 1
 
     return render_template("kundsearch.html", **data)
 

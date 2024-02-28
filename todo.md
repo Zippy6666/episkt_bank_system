@@ -2,7 +2,7 @@
 
 - [ ] Bild bäckground vore najs, and just make it look better over all
 - [ ] Flytta transaktionslistan
-- [ ] Fix search error
+- [x] Fix search error
 - [x] Fix error with too big numbers
 
 
