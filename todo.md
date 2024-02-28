@@ -1,6 +1,6 @@
 # TODO
 
-- [ ] Bild bäckground vore najs, and just make it look better over all
+- [ ] Bild bäckground vore najs, and just make it look better over all, better table design
 - [ ] Flytta transaktionslistan
 - [x] Fix search error
 - [x] Fix error with too big numbers

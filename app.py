@@ -83,6 +83,7 @@ def get_user(email: str) -> SuperUser:
 
 
 def check_password(input_password: str, stored_hash: str) -> bool:
+    """Password check"""
     input_hash = sha256(input_password.encode()).hexdigest()
     return input_hash == stored_hash
 
@@ -90,6 +91,7 @@ def check_password(input_password: str, stored_hash: str) -> bool:
 def customer_search(
     search_str: str, sort_by: str = "id", sort_direction: str = "asc", page: int = 1
 ):
+    """ Searches for a customer by string, and also handles sorting and paginating the search. """
     str_in_name = Customer.name.ilike(f"%{search_str}%")
     str_in_city = Customer.city.ilike(f"%{search_str}%")
 
@@ -118,12 +120,15 @@ def customer_search(
 def transaction(
     amt: float, account: Account, is_transfer: bool = False
 ) -> tuple[str, bool]:
-    """Do a transaction for an account"""
-    b_uttag = amt < 0
+    """Do a transaction for an account. Returns a response message, and a bool letting us know if the transaction succeded."""
 
+    b_uttag = amt < 0 # amt < 0 = It's a withrawal
+
+    # Account not found
     if not account:
         return TransactionResultMessage.NOT_FOUND.value, False
 
+    # Trying to withdraw/transfer too much
     if b_uttag and -amt > account.saldo:
         return (
             TransactionResultMessage.INSUFFICIENT_FUNDS.value,
@@ -134,7 +139,7 @@ def transaction(
         # Saldo change
         account.saldo += amt
 
-        # Register "from" transaction
+        # Add new transaction to session
         transaction_ = Transaction(
             account_id=account.id,
             timestamp=datetime.now(),
@@ -150,6 +155,7 @@ def transaction(
 
 
 def commit_transaction() -> bool:
+    """ Tries to commit to database, rolls back on fail. Was intended to be used during a transaction """
     try:
         db.session.commit()
         return True
@@ -166,21 +172,22 @@ def commit_transaction() -> bool:
 # login page
 @app.route("/login", methods=["GET", "POST"])
 def login() -> str:
+    """ User login page """
     errormsg = ""
 
-    # login post
+    # Login post
     if request.method == "POST":
         email = request.form["email"]
         user = get_user(email)
 
-        # user email registered in database
+        # User email registered in database
         if not user is None:
             password = request.form["password"]
             authorized = check_password(password, user.password)
 
             if authorized:
-                login_user(user)  # login
-                return redirect(url_for("index"))  # to homepage
+                login_user(user) # Login
+                return redirect(url_for("index")) # Redirect to homepage
             else:
                 errormsg = "The password is incorrect."
 
@@ -198,7 +205,7 @@ def login() -> str:
 @app.route("/")
 @login_required
 def index() -> str:
-    """First page, needs login"""
+    """Homepage, shows statistics"""
 
     cquery = Customer.query  # customer query
     aquery = Account.query  # account query
@@ -224,7 +231,6 @@ def kundbild() -> str:
     """Kundbild"""
 
     force_id = request.args.get("id")
-
     data = dict(
         info_kundid="Ingen kund vald",
         account_fetch_status="Ingen registrerad kund vald",
@@ -234,20 +240,22 @@ def kundbild() -> str:
     if request.method == "POST" or force_id:
         id = force_id or request.form["kundid"]
 
-        # Input validation
-        if isinstance(id, str) and id.isnumeric():
+        
+        if isinstance(id, str) and id.isnumeric(): # Input validation
             customer = get_customer(id)
-
             data["input_kundid"] = id
 
             if customer is None:
+                # Let us know that the customer isn't registered in the database
                 data["info_kundid"] = "Kund #" + id + " finns ej registrerad."
             else:
+                # General info
                 data["info_kundid"] = "Kund #" + id + ": " + customer.name
                 data["info_personnummer"] = "Personnummer: " + customer.personnummer
                 data["info_city"] = "Stad: " + customer.city
                 data["info_accounts"] = customer.accounts
 
+                # Calculate total saldo
                 if len(customer.accounts) > 0:
                     totsaldo = sum(
                         a.saldo for a in Account.query.all() if a.customer_id == int(id)
@@ -255,6 +263,7 @@ def kundbild() -> str:
                     totsaldo = f"{totsaldo:,}"
                     data["info_totsaldo"] = f"Totalt saldo: {totsaldo} SEK"
 
+                # Let us know wheter or not the customer has any accounts
                 data["account_fetch_status"] = (
                     len(customer.accounts) > 0
                     and ("Konton hittade för kund #" + id)
@@ -272,6 +281,7 @@ def kundbild() -> str:
 @app.route("/kundsokning", methods=["GET", "POST"])
 @login_required
 def kundsokning() -> str:
+    """Customer search."""
     data = dict(
         search_h1="Sökningsresultat för kundsökningen visas här.",
         results_count=0,
@@ -317,6 +327,7 @@ def kundsokning() -> str:
 @app.route("/kontobild", methods=["GET", "POST"])
 @login_required
 def kontobild() -> str:
+    """Kontobild"""
     konto_id = request.args.get("id")
     account = get_account(konto_id)
 
@@ -334,14 +345,16 @@ def kontobild() -> str:
                 transaction_type = request.form.get("transaction_type")
                 transfer_accountnr = request.form.get("transfer_accountnr")
 
+                # Set 'belopp' to a negative value if the transaction type is a withdrawal or transfer
                 if transaction_type == "uttag" or transaction_type == "överför":
                     belopp = -belopp
 
+                # Do transaction for this account
                 transaction_msg, success = transaction(
                     belopp, account, transaction_type == "överför"
                 )
 
-                # Transfer
+                # Transfer, do a transaction for the recieving account as well
                 if success and transaction_type == "överför":
                     receiving_account = get_account_by_nr(transfer_accountnr)
 
@@ -355,6 +368,7 @@ def kontobild() -> str:
                             or "(RECEIVING END) " + transfer_to_msg
                         )
                     else:
+                        # Cannot transfer to itself
                         transaction_msg = TransactionResultMessage.FORBIDDEN.value
                         success = False
 
@@ -386,11 +400,13 @@ def kontobild() -> str:
 
 @app.route("/terms-of-service")
 def tos() -> str:
+    """Terms of service"""
     return render_template("tos.html")
 
 
 @app.route("/privacy-policy")
 def privacy_policy() -> str:
+    """Privacy policy"""
     return render_template("privacy-policy.html")
 
 
