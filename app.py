@@ -91,7 +91,7 @@ def check_password(input_password: str, stored_hash: str) -> bool:
 def customer_search(
     search_str: str, sort_by: str = "id", sort_direction: str = "asc", page: int = 1
 ):
-    """ Searches for a customer by string, and also handles sorting and paginating the search. """
+    """Searches for a customer by string, and also handles sorting and paginating the search."""
     str_in_name = Customer.name.ilike(f"%{search_str}%")
     str_in_city = Customer.city.ilike(f"%{search_str}%")
 
@@ -122,7 +122,7 @@ def transaction(
 ) -> tuple[str, bool]:
     """Do a transaction for an account. Returns a response message, and a bool letting us know if the transaction succeded."""
 
-    b_uttag = amt < 0 # amt < 0 = It's a withrawal
+    b_uttag = amt < 0  # amt < 0 = It's a withrawal
 
     # Account not found
     if not account:
@@ -155,7 +155,7 @@ def transaction(
 
 
 def commit_transaction() -> bool:
-    """ Tries to commit to database, rolls back on fail. Was intended to be used during a transaction """
+    """Tries to commit to database, rolls back on fail. Was intended to be used during a transaction"""
     try:
         db.session.commit()
         return True
@@ -172,7 +172,7 @@ def commit_transaction() -> bool:
 # login page
 @app.route("/login", methods=["GET", "POST"])
 def login() -> str:
-    """ User login page """
+    """User login page"""
     errormsg = ""
 
     # Login post
@@ -186,8 +186,8 @@ def login() -> str:
             authorized = check_password(password, user.password)
 
             if authorized:
-                login_user(user) # Login
-                return redirect(url_for("index")) # Redirect to homepage
+                login_user(user)  # Login
+                return redirect(url_for("index"))  # Redirect to homepage
             else:
                 errormsg = "The password is incorrect."
 
@@ -240,8 +240,7 @@ def kundbild() -> str:
     if request.method == "POST" or force_id:
         id = force_id or request.form["kundid"]
 
-        
-        if isinstance(id, str) and id.isnumeric(): # Input validation
+        if isinstance(id, str) and id.isnumeric():  # Input validation
             customer = get_customer(id)
             data["input_kundid"] = id
 
@@ -297,8 +296,10 @@ def kundsokning() -> str:
     # Show table of customers if we should
     if request.method == "POST" or sort_by or page:
         search_str = (
-            "search-bar" in request.form and request.form["search-bar"]
-        ) or request.args.get("searchword") or ""
+            ("search-bar" in request.form and request.form["search-bar"])
+            or request.args.get("searchword")
+            or ""
+        )
         data["searchbarval"] = search_str
 
         if len(search_str) > 0:
@@ -311,7 +312,9 @@ def kundsokning() -> str:
             else:
                 data["new_direction"] = "asc"
 
-            data["search_h1"] = str(results_count) + " sökresultat för '" + search_str + "'"
+            data["search_h1"] = (
+                str(results_count) + " sökresultat för '" + search_str + "'"
+            )
             data["results"] = results
             data["results_count"] = results_count
             data["page"] = page or 1
@@ -388,7 +391,10 @@ def kontobild() -> str:
         info_saldo=f"{account.saldo:,}",
         info_transactions=account.transactions,
         transaction_msg=transaction_msg or "",
-        transaction_msg_type= (transaction_msg==TransactionResultMessage.SUCCESS.value and "sucesstext") or "errortext"
+        transaction_msg_type=(
+            transaction_msg == TransactionResultMessage.SUCCESS.value and "sucesstext"
+        )
+        or "errortext",
     )
 
     return render_template("kontobild.html", **data)
