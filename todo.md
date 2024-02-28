@@ -1,10 +1,9 @@
 # TODO
 
-- [ ] Better table design
-- [ ] Flytta transaktionslistan
+- [x] Better table design
+- [x] Flytta transaktionslistan
 - [x] Fix search error
 - [x] Fix error with too big numbers
-- [ ] No more javascript
 
 
 - [ ] G - Administrationssystem för en bank.

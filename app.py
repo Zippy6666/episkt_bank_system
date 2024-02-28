@@ -391,8 +391,6 @@ def kontobild() -> str:
         transaction_msg_type= (transaction_msg==TransactionResultMessage.SUCCESS.value and "sucesstext") or "errortext"
     )
 
-    print("TEST", data["transaction_msg_type"])
-
     return render_template("kontobild.html", **data)
 
 
