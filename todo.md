@@ -6,7 +6,7 @@
 - [x] Fix error with too big numbers
 
 
-- [ ] G - Administrationssystem för en bank.
+- [x] G - Administrationssystem för en bank.
     - [x] Inloggning ska vara implementerat
         Du ska lägga in roller via seed, Rollen Cashier ska kunna administrera kunder och deras konton.
     - [x] Bygg ett webbgränssnitt.
@@ -36,4 +36,4 @@
     - [x] Använd den databas som seedas vid UPPSTART, SQLAlchemy etc.
     - [x] Det får inte bli några avrundningsfel så använd decimal.
     - [x] Fixa footern
-    - [ ] MAKE SURE IT WORKS, MAKE SURE IT DOES EVERYTGHING IT SHOULD
+    - [x] MAKE SURE IT WORKS, MAKE SURE IT DOES EVERYTGHING IT SHOULD
