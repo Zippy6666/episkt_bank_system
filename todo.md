@@ -2,6 +2,8 @@
 
 - [ ] Bild bäckground vore najs
 - [ ] Flytta transaktionslistan
+- [ ] Fix search error
+- [x] Fix error with too big numbers
 
 
 - [ ] G - Administrationssystem för en bank.
@@ -28,9 +30,10 @@
         - [x] Det ska inte gå att ändra saldo direkt på ett konto - alltid via en transaktion.
         - [x] Det ska framgå tydligt om någon försöker ta ut eller överföra mer pengar än vad som finns på kontot.
     - [x] Input valideringar, tänk på att kronofogden ska använda systemet.
-    - [ ] Det ska finnas Unit Tester där du skriver tester som testar att det:
+    - [x] Det ska finnas Unit Tester där du skriver tester som testar att det:
         - [ ] inte går att ta ut eller överföra mer pengar än det finns på kontot.
-        - [ ] gå att sätta in eller ta ut negativa belopp.
+        - [x] gå att sätta in eller ta ut negativa belopp.
     - [ ] Fixa footern
     - [ ] Använd den databas som seedas vid UPPSTART, SQLAlchemy etc.
     - [ ] Det får inte bli några avrundningsfel så använd decimal.
+    - [ ] MAKE SURE IT WORKS

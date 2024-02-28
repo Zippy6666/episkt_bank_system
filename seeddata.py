@@ -1,6 +1,5 @@
 from faker import Faker
 from models import Customer, Account, SuperUser, Transaction, db
-from app import app
 from hashlib import sha256
 import random
 
@@ -88,5 +87,7 @@ def seed_data():
 
 
 if __name__ == "__main__":
+    from app import app
+
     with app.app_context():
         seed_data()

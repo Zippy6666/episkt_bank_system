@@ -3,7 +3,6 @@
 # =====================================================================
 
 
-import webbrowser, os, threading
 from flask import Flask, render_template, request, redirect, url_for
 from flask_migrate import Migrate, upgrade
 from flask_login import login_required, LoginManager, login_user
@@ -12,6 +11,9 @@ from hashlib import sha256
 from sqlalchemy import or_
 from datetime import datetime
 from enum import Enum
+from seeddata import seed_data
+from decimal import Decimal
+import os
 
 
 # =====================================================================
@@ -33,6 +35,7 @@ db.init_app(app)
 
 migrate = Migrate(app, db)
 
+
 # =====================================================================
 # Enums
 # =====================================================================
@@ -45,6 +48,7 @@ class TransactionResultMessage(Enum):
     SUCCESS = "Transaction success: Successfully completed the transaction!"
     FORBIDDEN = "Transaction error: Forbidden transfer!"
     LESS_THAN_ZERO = "Transaction error: Input must be more than 0!"
+    DB_ERROR = "Transaction error: Database commit error."
 
 
 # =====================================================================
@@ -143,6 +147,15 @@ def transaction(
         return TransactionResultMessage.UNKNOWN.value, False
 
     return TransactionResultMessage.SUCCESS.value, True
+
+
+def commit_transaction() -> bool:
+    try:
+        db.session.commit()
+        return True
+    except Exception:
+        db.session.rollback()
+        return False
 
 
 # =====================================================================
@@ -311,7 +324,7 @@ def kontobild() -> str:
     if request.method == "POST":
         try:
             str_belopp = request.form.get("belopp")
-            belopp = float(str_belopp)
+            belopp = Decimal(str_belopp)
         except Exception as e:
             print(f"Error during input: {e}")
             transaction_msg = "Transaction error: Invalid input."
@@ -346,7 +359,9 @@ def kontobild() -> str:
 
                 # Commit or rollback
                 if success:
-                    db.session.commit()
+                    commit_success = commit_transaction()
+                    if not commit_success:
+                        transaction_msg = TransactionResultMessage.DB_ERROR.value
                 else:
                     db.session.rollback()
             else:
@@ -384,14 +399,16 @@ def privacy_policy() -> str:
 
 
 def main() -> None:
-    # flask db migrate -m "Your migration message"
-    # flask db upgrade
-
     with app.app_context():
+        # UNCOMMENT TO CREATE TABLES
+        # db.create_all()
+
+        # Upgrade
         upgrade()
 
-    if threading.current_thread() == threading.main_thread():
-        webbrowser.open("http://127.0.0.1:5000/")
+        # Seed
+        if db.session.query(Customer).count() == 0:
+            seed_data()
 
     app.run("127.0.0.1", port=5000, debug=True)
 
