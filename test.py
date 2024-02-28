@@ -1,4 +1,4 @@
-from app import app, TransactionResultMessage, load_user, get_user
+from app import app, TransactionResultMessage, get_user
 from models import Account
 from sqlalchemy.sql.expression import func
 from flask_login import login_user
@@ -9,6 +9,7 @@ class BankSysTest(unittest.TestCase):
     def setUp(self):
         app.testing=True
         self.test_client = app.test_client(use_cookies=True)
+        login_user( get_user("stefan.holmberg@systementor.se") )
 
     def test_mega_transfer(self):
         ...
@@ -17,21 +18,15 @@ class BankSysTest(unittest.TestCase):
         ...
     
     def test_negative_transaction(self):
-        # Load an admin user
-        user = get_user("stefan.holmberg@systementor.se")
-        # load_user(user.id)
-        login_user(user)
-
-        # Get a random account
+        # Random account to test on
         account = Account.query.order_by(func.random()).first()
 
-
-        response = self.test_client.post("/kontobild", data=dict(id=account.id, belopp=-10))
+        # Post request
+        response = self.test_client.post(f"/kontobild?id={account.id}", data={"belopp":"-10"})
         self.assertEqual(response.status_code, 200)
 
-        error_msg = TransactionResultMessage.LESS_THAN_ZERO.value
-
-        self.assertIn(error_msg, response.data.decode('utf-8'))
+        # Did we get the less than 0 error message?
+        self.assertIn(TransactionResultMessage.LESS_THAN_ZERO.value, response.data.decode('utf-8'))
 
 
 if __name__ == '__main__':

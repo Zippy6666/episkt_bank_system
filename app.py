@@ -303,7 +303,6 @@ def kundsokning() -> str:
 @app.route("/kontobild", methods=["GET", "POST"])
 @login_required
 def kontobild() -> str:
-    print(request, request.args)
     konto_id = request.args.get("id")
     account = get_account(konto_id)
 
@@ -311,7 +310,8 @@ def kontobild() -> str:
     transaction_msg = None
     if request.method == "POST":
         try:
-            belopp = float(request.form.get("belopp"))
+            str_belopp = request.form.get("belopp")
+            belopp = float(str_belopp)
         except Exception as e:
             print(f"Error during input: {e}")
             transaction_msg = "Transaction error: Invalid input."
