@@ -9,33 +9,50 @@ class BankSysTest(unittest.TestCase):
     def setUp(self):
         app.testing = True
         self.test_client = app.test_client()
-        self.test_account = Account.query.order_by(
-            func.random()
-        ).first()  # Random account to test
+
+        # Random account to test on
+        self.test_account = Account.query.order_by(func.random()).first()
+
         login_user(get_user("stefan.holmberg@systementor.se"))
 
     def test_mega_transfer(self):
-        # response = self.test_client.post("", data={})
-        # self.assertEqual(response.status_code, 200)
-        ...
+        # Another random account to transfer to, that is not self.test_account
+        receiving_account = (
+            Account.query.filter(Account.id != self.test_account.id)
+            .order_by(func.random())
+            .first()
+        )
+
+        response = self.test_client.post(
+            f"/kontobild?id={self.test_account.id}",
+            data={
+                "belopp": "1000000000",
+                "transaction_type": "överför",
+                "transfer_accountnr": receiving_account.kontonummer,
+            },
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertIn(
+            TransactionResultMessage.INSUFFICIENT_FUNDS.value,
+            response.data.decode("utf-8"),
+        )
 
     def test_mega_withdrawal(self):
-        # response = self.test_client.post("", data={})
-        # self.assertEqual(response.status_code, 200)
-        ...
+        response = self.test_client.post(
+            f"/kontobild?id={self.test_account.id}",
+            data={"belopp": "1000000000", "transaction_type": "uttag"},
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertIn(
+            TransactionResultMessage.INSUFFICIENT_FUNDS.value,
+            response.data.decode("utf-8"),
+        )
 
     def test_negative_transaction(self):
-        """Test negative transaction.
-        Transaction type is not required since the app will immedietly notice that the sum is negative,
-        and throw the same error message."""
-
-        # Post request
         response = self.test_client.post(
             f"/kontobild?id={self.test_account.id}", data={"belopp": "-10"}
         )
         self.assertEqual(response.status_code, 200)
-
-        # Did we get the less than 0 error message?
         self.assertIn(
             TransactionResultMessage.LESS_THAN_ZERO.value, response.data.decode("utf-8")
         )

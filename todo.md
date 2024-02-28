@@ -1,6 +1,6 @@
 # TODO
 
-- [ ] Bild bäckground vore najs
+- [ ] Bild bäckground vore najs, and just make it look better over all
 - [ ] Flytta transaktionslistan
 - [ ] Fix search error
 - [x] Fix error with too big numbers
@@ -31,9 +31,9 @@
         - [x] Det ska framgå tydligt om någon försöker ta ut eller överföra mer pengar än vad som finns på kontot.
     - [x] Input valideringar, tänk på att kronofogden ska använda systemet.
     - [x] Det ska finnas Unit Tester där du skriver tester som testar att det:
-        - [ ] inte går att ta ut eller överföra mer pengar än det finns på kontot.
+        - [x] inte går att ta ut eller överföra mer pengar än det finns på kontot.
         - [x] gå att sätta in eller ta ut negativa belopp.
+    - [x] Använd den databas som seedas vid UPPSTART, SQLAlchemy etc.
+    - [x] Det får inte bli några avrundningsfel så använd decimal.
     - [ ] Fixa footern
-    - [ ] Använd den databas som seedas vid UPPSTART, SQLAlchemy etc.
-    - [ ] Det får inte bli några avrundningsfel så använd decimal.
-    - [ ] MAKE SURE IT WORKS
+    - [ ] MAKE SURE IT WORKS, MAKE SURE IT DOES EVERYTGHING IT SHOULD
