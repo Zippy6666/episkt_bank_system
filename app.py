@@ -114,7 +114,7 @@ def customer_search(
     else:
         query = query.order_by(column.asc())
 
-    return query.paginate(page=page, per_page=50), query.count()
+    return query.paginate(page=page, per_page=49), query.count()
 
 
 def transaction(
@@ -388,7 +388,10 @@ def kontobild() -> str:
         info_saldo=f"{account.saldo:,}",
         info_transactions=account.transactions,
         transaction_msg=transaction_msg or "",
+        transaction_msg_type= (transaction_msg==TransactionResultMessage.SUCCESS.value and "sucesstext") or "errortext"
     )
+
+    print("TEST", data["transaction_msg_type"])
 
     return render_template("kontobild.html", **data)
 

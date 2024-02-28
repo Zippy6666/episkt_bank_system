@@ -1,9 +1,10 @@
 # TODO
 
-- [ ] Bild bäckground vore najs, and just make it look better over all, better table design
+- [ ] Better table design
 - [ ] Flytta transaktionslistan
 - [x] Fix search error
 - [x] Fix error with too big numbers
+- [ ] No more javascript
 
 
 - [ ] G - Administrationssystem för en bank.
@@ -35,5 +36,5 @@
         - [x] gå att sätta in eller ta ut negativa belopp.
     - [x] Använd den databas som seedas vid UPPSTART, SQLAlchemy etc.
     - [x] Det får inte bli några avrundningsfel så använd decimal.
-    - [ ] Fixa footern
+    - [x] Fixa footern
     - [ ] MAKE SURE IT WORKS, MAKE SURE IT DOES EVERYTGHING IT SHOULD
